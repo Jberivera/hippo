@@ -1,0 +1,26 @@
+{
+  "name": "node-example",
+  "version": "0.0.4",
+  "description": "This example app is so cool.",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jberivera/fiona.git"
+  },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "author": "jberivera",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jberivera/fiona/issues"
+  }
+  {
+  "engines": {
+    "node": "0.10.x"
+  }
+}
