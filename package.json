@@ -1,6 +1,6 @@
 {
   "name": "node-example",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "This example app is so cool.",
   "main": "web.js",
   "scripts": {
