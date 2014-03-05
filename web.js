@@ -6,7 +6,6 @@ var requestHandlers=require("./requestHandlers");
 
 var handle={};
 handle["/"]=requestHandlers.index;
-handle["http://tranquil-reaches-4333.herokuapp.com/"]=requestHandlers.index;
 handle["/holamundo"]=requestHandlers.holamundo;
 handle["/css/base.css"]=requestHandlers.css;
 handle["/js/init.js"]=requestHandlers.js;
