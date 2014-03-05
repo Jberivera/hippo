@@ -92,12 +92,14 @@ var circle=function(i){
     dragger.addChild(c, label);
     stage.addChild(dragger);
     dragger.on("pressmove",function(evt) {
+        evt.preventDefault();
         // currentTarget will be the container that the event listener was added to:
         evt.currentTarget.x = evt.stageX;
         evt.currentTarget.y = evt.stageY;
         stage.update();
     });
     dragger.on("pressup",function(evt){
+        evt.preventDefault();
         var bitmap=Scene1.svg[i];
         if((evt.currentTarget.x > (bitmap.x) && (evt.currentTarget.x < (bitmap.x+110)))){
             if((evt.currentTarget.y > (bitmap.y) && (evt.currentTarget.y < (bitmap.y+130)))){

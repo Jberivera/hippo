@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0bee2f0-1086-4c9a-bfd5-0d5e283c70f9" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Procfile.yaml" afterPath="$PROJECT_DIR$/Procfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/scene1.js" afterPath="$PROJECT_DIR$/js/scene1.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fiona.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,10 +35,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="server.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="server.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="35" selection-start="300" selection-end="300" vertical-scroll-proportion="0.20134228" vertical-offset="0" max-vertical-offset="596">
+            <state line="11" column="30" selection-start="347" selection-end="347" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scene1.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/scene1.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="103" column="36" selection-start="3714" selection-end="3714" vertical-scroll-proportion="0.38250428" vertical-offset="1322" max-vertical-offset="1905">
               <folding />
             </state>
           </provider>
@@ -100,6 +108,7 @@
         <option value="$PROJECT_DIR$/web.js" />
         <option value="$PROJECT_DIR$/Procfile.yaml" />
         <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/js/scene1.js" />
       </list>
     </option>
   </component>
@@ -151,6 +160,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="fiona" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fiona" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fiona" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -320,7 +343,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="35" selection-start="300" selection-end="300" vertical-scroll-proportion="0.20134228" vertical-offset="0" max-vertical-offset="596">
+        <state line="11" column="30" selection-start="347" selection-end="347" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/scene1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="36" selection-start="3714" selection-end="3714" vertical-scroll-proportion="0.38250428" vertical-offset="1322" max-vertical-offset="1905">
           <folding />
         </state>
       </provider>
