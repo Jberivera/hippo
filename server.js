@@ -9,6 +9,6 @@ function iniciar(route, handle){
 		route(handle,pathname,res);
 
 	}).listen(port);
-	console.log("Servidor Iniciado");
+	console.log("Servidor Iniciado "+port);
 }
 exports.iniciar=iniciar;
