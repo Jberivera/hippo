@@ -15,6 +15,7 @@ var Scenes=[null,Scene1];
 var language="es";
 var init=function(){
     stage=new createjs.Stage(canvas);
+    createjs.Touch.enable(stage);
     Queue= new createjs.LoadQueue();
     Queue.addEventListener("complete",selectionPanel);
     Queue.Manifest=[

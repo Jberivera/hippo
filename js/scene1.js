@@ -92,14 +92,18 @@ var circle=function(i){
     dragger.addChild(c, label);
     stage.addChild(dragger);
     dragger.on("pressmove",function(evt) {
-        evt.preventDefault();
         // currentTarget will be the container that the event listener was added to:
+        c.scaleX = c.scaleY = 1.35;
+        label.font="bold 40px Arial";
+        label.y = -20;
         evt.currentTarget.x = evt.stageX;
         evt.currentTarget.y = evt.stageY;
         stage.update();
     });
     dragger.on("pressup",function(evt){
-        evt.preventDefault();
+        c.scaleX = c.scaleY = 1;
+        label.font="bold 25px Arial";
+        label.y = -12;
         var bitmap=Scene1.svg[i];
         if((evt.currentTarget.x > (bitmap.x) && (evt.currentTarget.x < (bitmap.x+110)))){
             if((evt.currentTarget.y > (bitmap.y) && (evt.currentTarget.y < (bitmap.y+130)))){
@@ -108,7 +112,6 @@ var circle=function(i){
                 label.font="bold 32px Arial";
                 label.color="#"+Math.floor(Math.random()*999);
                 label.y = -100;
-                stage.update();
                 Scene1.win+=1;
             }
         }
@@ -117,6 +120,7 @@ var circle=function(i){
             Scene1.win=0;
             init();
         }
+        stage.update();
     });
     stage.update();
 };
