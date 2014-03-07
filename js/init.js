@@ -4,8 +4,15 @@
 var stage;
 //Container
 var container=document.getElementById("container");
-container.style.width="100%";
-container.style.height=window.innerHeight+"px";
+
+if(window.innerWidth>window.innerHeight){
+    container.style.width=window.innerWidth+"px";
+    container.style.height=window.innerHeight+"px";
+}else{
+    container.style.width=window.innerHeight+"px";
+    container.style.height=window.innerWidth+"px";
+}
+
 //Canvas
 var canvas=document.getElementById("myCanvas");
 canvas.width=container.offsetWidth;
