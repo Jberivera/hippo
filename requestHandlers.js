@@ -51,7 +51,7 @@ function json(res,pathname){
     });
 }
 
-function img(res,pathname){
+function png(res,pathname){
     var path=pathname.substring(1);
     console.log("Manipulador de peticion 'IMG' ha sido llamado. ");
     var image=fs.readFileSync(path);
@@ -77,6 +77,6 @@ exports.index=index;
 exports.holamundo=holamundo;
 exports.css=css;
 exports.js=js;
-exports.img=img;
+exports.png=png;
 exports.json=json;
 exports.svg=svg;
