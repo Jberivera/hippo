@@ -1,5 +1,5 @@
 function route(handle, pathname, res){
-	console.log("A punto de rutear una peticion para "+pathname);
+	console.log("Ruteando "+pathname);
 	if(typeof handle[pathname]==='function'){
 		handle[pathname](res,pathname);
 	}else{

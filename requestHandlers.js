@@ -1,82 +1,58 @@
+var fs = require('fs');
 
-var fs=require('fs');
+function index(res, pathname) {
+    fs.readFile("index.html", "utf8", function (err, data) {
+        res.writeHead(200, {"Content-Type": "text/html"});
+        if (err) {
 
-function index(res,pathname){
-	console.log("Manipulador de peticion 'iniciar' ha sido llamado.");
-	fs.readFile("index.html","utf8",function(err,data){
-        res.writeHead(200,{"Content-Type":"text/html"});
-        if(err){
-            res.write("Ups, that's awkward");
-        }else{
+        } else {
             res.write(data);
         }
         res.end();
     });
 }
-function css(res,pathname){
-    console.log("Manipulador de peticion 'CSS' ha sido llamado.");
-    fs.readFile("css/base.css","utf8",function(err,data){
-        res.writeHead(200,{"Content-Type":"text/css"});
-        if(err){
-            res.write("Ups, that's awkward");
-        }else{
+function data(res, pathname) {
+    var sub = pathname.substring(pathname.length - 3, pathname.length);
+    var path = pathname.substring(1);
+    var Type;
+    switch (sub) {
+        case ".js":
+            Type = "application/javascript";
+            readFile(res,path,Type);
+            break;
+        case "css":
+            Type = "text/css";
+            readFile(res,path,Type);
+            break;
+        case "son":
+            Type = "text/plain";
+            readFile(res,path,Type);
+            break;
+        case "png":
+            Type = "image/png";
+            imgFile(res,path,Type);
+            break;
+        case "svg":
+            Type = "image/svg+xml";
+            imgFile(res,path,Type);
+            break;
+    }
+
+}
+function readFile(res,path, Type) {
+    fs.readFile(path, "utf8", function (err, data) {
+        res.writeHead(200, {"Content-Type": Type});
+        if (err) {
+
+        } else {
             res.end(data);
         }
     });
 }
-
-function js(res,pathname){
-    var path=pathname.substring(1);
-    console.log("Manipulador de peticion 'JS' ha sido llamado. ");
-    fs.readFile(path,"utf8",function(err,data){
-        res.writeHead(200,{"Content-Type":"application/javascript"});
-        if(err){
-            res.write("Ups, that's awkward");
-        }else{
-            res.end(data);
-        }
-    });
-}
-
-function json(res,pathname){
-    var path=pathname.substring(1);
-    console.log("Manipulador de peticion 'JSON' ha sido llamado. ");
-    fs.readFile(path,"utf8",function(err,data){
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        if(err){
-            res.write("Ups, that's awkward");
-        }else{
-            res.end(data);
-        }
-    });
-}
-
-function png(res,pathname){
-    var path=pathname.substring(1);
-    console.log("Manipulador de peticion 'IMG' ha sido llamado. ");
-    var image=fs.readFileSync(path);
-    res.writeHead(200, {'Content-Type': 'image/png' });
+function imgFile(res,path,Type){
+    var image = fs.readFileSync(path);
+    res.writeHead(200, {'Content-Type': Type });
     res.end(image, 'binary');
 }
-
-function svg(res,pathname){
-    var path=pathname.substring(1);
-    console.log("Manipulador de peticion 'SVG' ha sido llamado. ");
-    var image=fs.readFileSync(path);
-    res.writeHead(200, {'Content-Type': 'image/svg+xml' });
-    res.end(image, 'binary');
-}
-
-function holamundo(res,pathname){
-	console.log("Manipulador de peticion 'subir' ha sido llamado.");
-	res.writeHead(200,{"Content-Type":"text/html"});
-	res.write("Cual hola mundo, no seas pendejo");
-	res.end();
-}
-exports.index=index;
-exports.holamundo=holamundo;
-exports.css=css;
-exports.js=js;
-exports.png=png;
-exports.json=json;
-exports.svg=svg;
+exports.index = index;
+exports.data = data;
