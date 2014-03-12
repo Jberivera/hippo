@@ -1,70 +1,69 @@
 {
-    "scene1":
-    [
+    "scene1": [
         [
             {
-                "color":1,
-                "drag":"Cat"
+                "color": 1,
+                "drag": "Cat"
             },
             {
-                "color":2,
-                "drag":"Chicken"
+                "color": 2,
+                "drag": "Chicken"
             },
             {
-                "color":3,
-                "drag":"Cow"
+                "color": 3,
+                "drag": "Cow"
             },
             {
-                "color":4,
-                "drag":"Dog"
+                "color": 4,
+                "drag": "Dog"
             },
             {
-                "color":5,
-                "drag":"Frog"
+                "color": 5,
+                "drag": "Frog"
             },
             {
-                "color":6,
-                "drag":"Horse"
+                "color": 6,
+                "drag": "Horse"
             },
             {
-                "color":7,
-                "drag":"Pig"
+                "color": 7,
+                "drag": "Pig"
             },
             {
-                "color":8,
-                "drag":"Rabbit"
+                "color": 8,
+                "drag": "Rabbit"
             },
             {
-                "color":9,
-                "drag":"Sheep"
+                "color": 9,
+                "drag": "Sheep"
             },
             {
-                "color":10,
-                "drag":"Wolf"
+                "color": 10,
+                "drag": "Wolf"
             }
 
         ]
-    ], 
-    "scene2":[
+    ],
+    "scene2": [
         {
-            "color":1,
-            "drag":"Teacher"
+            "color": 1,
+            "drag": "Teacher"
         },
         {
-            "color":2,
-            "drag":"Baker"
+            "color": 2,
+            "drag": "Baker"
         },
         {
-            "color":3,
-            "drag":"Police man"
+            "color": 3,
+            "drag": "Police man"
         },
         {
-            "color":4,
-            "drag":"Fire man"
+            "color": 4,
+            "drag": "Fire man"
         },
         {
-            "color":5,
-            "drag":"Gardener"
-        } 
+            "color": 5,
+            "drag": "Gardener"
+        }
     ]
 }
