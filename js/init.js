@@ -33,7 +33,6 @@ var init = function () {
         {id: "scene4", src: "assets/init/scene1.png"}
     ];
     Queue.loadManifest(Queue.Manifest);
-//    Scenes.push(Scene1);
 };
 var selectionPanel = function () {
     var rect = new createjs.Shape();
@@ -49,44 +48,60 @@ var selectionPanel = function () {
 };
 var settingButton = function () {
     var setting = new createjs.Bitmap(Queue.getResult("setting"));
-    setting.x = canvas.width - 100;
+    setting.x = canvas.width - canvas.width*0.10;
     setting.y = 25;
     stage.addChild(setting);
     setting.on("click", function () {
         settingPanel();
     });
 };
-var lanvect = ["es", "en"];
+var lanvect = ["es", "en" , "es"];//Just for try
 var settingPanel = function () {
     var rect = new createjs.Shape();
-    rect.graphics.beginFill("000").drawRect(0, 0, canvas.width - 200, canvas.height - 200);
-
-//    var es=lanOption("es");
-
-    var en = new createjs.Shape();
-    en.graphics.beginFill("#fff485").drawCircle(270, 100, 70);
+    rect.graphics.beginFill("#5A3EA1").drawRect(0, 0, canvas.width - 200, canvas.height - 200);
+    var ok = new createjs.Shape();
+    console.log(rect);
+    var okwidth=rect.graphics._activeInstructions[0].params[2]*0.35;
+    var okheight=rect.graphics._activeInstructions[0].params[3];
+    ok.graphics.beginFill("#57998C").drawRect(okwidth, okheight-70, 370, 70);
 
     var settings = new createjs.Container();
     settings.x = 100;
     settings.y = 100;
-    settings.addChild(rect);
+    settings.addChild(rect,ok);
     for (var i = 0; i < lanvect.length; i++) {
         settings.addChild(new lanOption(lanvect[i], i).c);
     }
+    settings.on("click",function(){
+
+    });
+    ok.on("click",function(){
+        stage.removeChild(ok.parent);
+        stage.update();
+    });
     stage.addChild(settings);
     stage.update();
 };
 var lanOption = function (lan, i) {
-    this.c = new createjs.Shape();
-    this.c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawCircle(100 * (i + 1) + 80 * i, 100, 70);
+    this.c=new createjs.Container();//Container
+    var opt = new createjs.Shape();
+    opt.graphics.beginFill("#000").drawRect(100 * (i + 1) + 150 * i, 100, 150,150);
+    var label = new createjs.Text(lan, "bold 25px Arial", "#FFFFFF");
+    label.textAlign = "center";
+    label.x=175 * (i + 1) + 75 * i;
+    label.y = 160;
+    this.c.addChild(opt,label);
     var that = this;
     this.c.on("click", function () {
-        console.log(lan);
         language = lan;
-        stage.removeChild(that.c.parent);
+        console.log(that.c.parent);
+        var parent=that.c.parent.children;
+        for(var j=2;j<parent.length;j++){
+            parent[j].children[0].graphics._fillInstructions[0].params[1]="#000";
+        }
+        opt.graphics._fillInstructions[0].params[1]="#AD4A3A";
         stage.update();
     });
-//    return es;
 };
 var layout = {
     max: null,
@@ -101,7 +116,7 @@ var Scene = function (i) {
         selectScene.x = x;
         selectScene.y = y;
     } else {
-        if (!layout.max) {//set layout.max when its
+        if (!layout.max) {
             layout.max = i - 1;
             layout.i = i - 1;
         } else if (i - layout.i === layout.max + 1) {

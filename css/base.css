@@ -62,6 +62,8 @@ table {
 
 /* Give canvas a background */
 canvas {
+    margin-left:auto;
+    margin-top:auto;
     /*background-color: black;*/
 }
 
