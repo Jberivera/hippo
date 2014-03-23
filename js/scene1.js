@@ -19,7 +19,8 @@ var Scene1 = new function () {
         that.loader = new createjs.LoadQueue();
         that.loader.addEventListener("complete", loaderComplete);
         that.loader.loadManifest([
-            {id: "lan", src: "lan/" + lan + ".json", type: createjs.LoadQueue.JSON},
+            {id: "names", src: "assets/scene1/" + level + "/img/lan/names-" + lan + ".png", type: createjs.LoadQueue.IMAGE},
+            {id: "lan", src: "lan/"+lan+".json", type: createjs.LoadQueue.JSON},
             {id: "config", src: "config/scene1-config.json", type: createjs.LoadQueue.JSON}
         ]);
     };
@@ -58,57 +59,100 @@ var loadManifest = function () {
         backg.scaleY = canvas.height / backg.image.height;
         stage.addChild(backg);
     }
-//  imgs = an array with the images
+//  imgs = array with images
     var img = level.img;
     for (var i = 0; i < img.length; i++) {
-        Scene1.svg[i] = new createjs.Bitmap(loader.getResult("img" + i));
-        Scene1.svg[i].scaleX = Scene1.svg[i].scaleY = canvas.width * 0.00009;
-        Scene1.svg[i].x = canvas.width * img[i].x;
-        Scene1.svg[i].y = canvas.height * img[i].y;
-        stage.addChild(Scene1.svg[i]);
+        new image(i,loader,img);
     }
+    var lan=Scene1.lan.scene1[Scene1.level];
     for (var i = 0; i < Scene1.lan.scene1[Scene1.level].length; i++) {
         new circle(i);
     }
     stage.update();
 };
+var image=function(i,loader,img){
+    var svg = new createjs.Bitmap(loader.getResult("img" + i));
+    svg.scaleX = svg.scaleY = canvas.width * 0.00009;
+
+    var j=i*3;
+    var names=new createjs.SpriteSheet({
+        "animations":{
+            "gray":[j],
+            "drag":[j+1],
+            "done":[j+2]
+        },
+        "images":[Scene1.loader.getResult("names")],
+        "frames":{
+            "regX":33,
+            "regY":25,
+            "height":63,
+            "width":180,
+            "count":24
+        }
+    });
+    var name = new createjs.Sprite(names,"gray");
+
+    Scene1.svg[i] = new createjs.Container();
+    Scene1.svg[i].x = canvas.width * img[i].x;
+    Scene1.svg[i].y = canvas.height * img[i].y;
+    Scene1.svg[i].addChild(svg,name);
+    stage.addChild(Scene1.svg[i]);
+};
 var circle = function (i) {
     var that = this;
     that.i = i;
     var c = new createjs.Shape();
-    c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawCircle(0, 0, canvas.width * 0.045); //set color by default > lan.scene1[level][i].color
+    c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 180,63,5); //canvas.width * 0.045 set color by default > lan.scene1[level][i].color
 
-    //lan = an array
-    var lan = Scene1.lan.scene1[Scene1.level];
-    var label = new createjs.Text(lan[i].drag, "bold 25px Arial", "#FFFFFF");
-    label.textAlign = "center";
-    label.y = -12;
+//    var lan = Scene1.lan.scene1[Scene1.level];
+//    var label = new createjs.Text(lan[i].drag, "bold 25px Arial", "#FFFFFF");
+//    label.textAlign = "center";
+//    label.y = -12;
+    var j=i*3;
+    var names=new createjs.SpriteSheet({
+        "animations":{
+            "gray":[j],
+            "drag":[j+1],
+            "done":[j+2]
+        },
+        "images":[Scene1.loader.getResult("names")],
+        "frames":{
+            "regX":0,
+            "regY":0,
+            "height":63,
+            "width":180,
+            "count":24
+        }
+    });
+    var name = new createjs.Sprite(names,"drag");
 
     var dragger = new createjs.Container();
     dragger.x = dragger.y = 100;
-    dragger.addChild(c, label);
+    dragger.addChild(c, name);
     stage.addChild(dragger);
     dragger.on("pressmove", function (evt) {
         // currentTarget will be the container that the event listener was added to:
-        c.scaleX = c.scaleY = 1.35;
-        label.font = "bold 40px Arial";
-        label.y = -20;
-        evt.currentTarget.x = evt.stageX;
-        evt.currentTarget.y = evt.stageY;
+//        name.scaleX = name.scaleY = 1.35;
+//        c.graphics._fillInstructions[0].params[1]="transparent";
+//        label.font = "bold 40px Arial";
+//        label.y = -20;
+        evt.currentTarget.x = evt.stageX-90;
+        evt.currentTarget.y = evt.stageY-63;
         stage.update();
     });
     dragger.on("pressup", function (evt) {
-        c.scaleX = c.scaleY = 1;
-        label.font = "bold 25px Arial";
-        label.y = -12;
+//        name.scaleX = name.scaleY = 1;
+//        label.font = "bold 25px Arial";
+//        label.y = -12;
         var bitmap = Scene1.svg[i];
-        if ((evt.currentTarget.x > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 110)))) {
-            if ((evt.currentTarget.y > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 130)))) {
+        if ((evt.currentTarget.x+90 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 110)))) {
+            if ((evt.currentTarget.y+63 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 130)))) {
                 dragger.removeAllEventListeners();
-                dragger.removeChild(c);
-                label.font = "bold 32px Arial";
-                label.color = "#" + Math.floor(Math.random() * 999);
-                label.y = -100;
+                dragger.removeAllChildren();
+                Scene1.svg[i].children[1].gotoAndStop("done");
+//                label.font = "bold 32px Arial";
+//                label.color = "#" + Math.floor(Math.random() * 999);
+//                label.y = -100;
                 Scene1.win += 1;
             }
         }
