@@ -133,7 +133,7 @@ var circle = function (i) {
     dragger.on("pressmove", function (evt) {
         // currentTarget will be the container that the event listener was added to:
 //        name.scaleX = name.scaleY = 1.35;
-//        c.graphics._fillInstructions[0].params[1]="transparent";
+        c.graphics._fillInstructions[0].params[1]="transparent";
 //        label.font = "bold 40px Arial";
 //        label.y = -20;
         evt.currentTarget.x = evt.stageX-90;
