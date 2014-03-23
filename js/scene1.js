@@ -145,8 +145,8 @@ var circle = function (i) {
 //        label.font = "bold 25px Arial";
 //        label.y = -12;
         var bitmap = Scene1.svg[i];
-        if ((evt.currentTarget.x+90 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 110)))) {
-            if ((evt.currentTarget.y+40 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 130)))) {
+        if ((evt.currentTarget.x+90 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
+            if ((evt.currentTarget.y+40 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 140)))) {
                 dragger.removeAllEventListeners();
                 dragger.removeAllChildren();
                 Scene1.svg[i].children[1].gotoAndStop("done");
