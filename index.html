@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title></title>
-    <link rel="stylesheet" href="css/base.css" type="text/css"/>
-    <script src="http://code.createjs.com/createjs-2013.12.12.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width , initial-scale=1 ,maximum-scale=1">
+  
+  <title>Hippo Project</title>
+  
+  <!-- External CSS files -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  
+  <!-- JavaScript -->
 </head>
 <body onload="init()">
-<scrip src="js/createjs/createjs-2013.12.12.min.js"></scrip>
-<div id="container">
-    <canvas id="myCanvas" width="500" height="500"></canvas>
-</div>
-<script src="js/scene1.js"></script>
-<script src="js/init.js"></script>
+  <!-- a common parent div to let the game canvas live with other elements inside the UI -->
+  <div id="gameFrame">
+    <!-- our game canvas -->
+    <canvas id="gameCanvas" width="1366" height="768">
+    
+    </canvas>
+    <canvas id="uiCanvas" width="1366" height="768"></canvas>
+  </div>
+  
+  <!-- JavaScript & Libraries -->
+  <script src="js/vendor/createjs-2013.12.12.min.js"></script>
+  <script src="js/scene1.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

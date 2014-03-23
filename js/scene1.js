@@ -1,6 +1,3 @@
-/**
- * Created by jberivera
- */
 var Scene1 = new function () {
     var that = this;
     this.config;
