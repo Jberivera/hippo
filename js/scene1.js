@@ -137,7 +137,7 @@ var circle = function (i) {
 //        label.font = "bold 40px Arial";
 //        label.y = -20;
         evt.currentTarget.x = evt.stageX-90;
-        evt.currentTarget.y = evt.stageY-63;
+        evt.currentTarget.y = evt.stageY-40;
         stage.update();
     });
     dragger.on("pressup", function (evt) {
@@ -146,7 +146,7 @@ var circle = function (i) {
 //        label.y = -12;
         var bitmap = Scene1.svg[i];
         if ((evt.currentTarget.x+90 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 110)))) {
-            if ((evt.currentTarget.y+63 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 130)))) {
+            if ((evt.currentTarget.y+40 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 130)))) {
                 dragger.removeAllEventListeners();
                 dragger.removeAllChildren();
                 Scene1.svg[i].children[1].gotoAndStop("done");
