@@ -19,7 +19,7 @@ var Scene1 = new function () {
         that.loader = new createjs.LoadQueue();
         that.loader.addEventListener("complete", loaderComplete);
         that.loader.loadManifest([
-            {id: "names", src: "assets/scene1/" + level + "/img/lan/names-" + lan + ".png", type: createjs.LoadQueue.IMAGE},
+            {id: "names", src: "assets/scene1/" + level + "/img/lan/names_" + lan + ".png", type: createjs.LoadQueue.IMAGE},
             {id: "lan", src: "lan/"+lan+".json", type: createjs.LoadQueue.JSON},
             {id: "config", src: "config/scene1-config.json", type: createjs.LoadQueue.JSON}
         ]);
@@ -64,15 +64,14 @@ var loadManifest = function () {
     for (var i = 0; i < img.length; i++) {
         new image(i,loader,img);
     }
-    var lan=Scene1.lan.scene1[Scene1.level];
-    for (var i = 0; i < Scene1.lan.scene1[Scene1.level].length; i++) {
+    for (var i = 0; i < img.length; i++) {
         new circle(i);
     }
     stage.update();
 };
 var image=function(i,loader,img){
     var svg = new createjs.Bitmap(loader.getResult("img" + i));
-    svg.scaleX = svg.scaleY = canvas.width * 0.00009;
+    svg.scaleX = svg.scaleY = canvas.width * 0.0005;
 
     var j=i*3;
     var names=new createjs.SpriteSheet({
@@ -83,14 +82,16 @@ var image=function(i,loader,img){
         },
         "images":[Scene1.loader.getResult("names")],
         "frames":{
-            "regX":33,
-            "regY":25,
-            "height":63,
-            "width":180,
-            "count":24
+            "regX":90,
+            "regY":85,
+            "height":130,
+            "width":340,
+            "count":27
         }
     });
+
     var name = new createjs.Sprite(names,"gray");
+    name.scaleX=name.scaleY=canvas.width*0.00065;
 
     Scene1.svg[i] = new createjs.Container();
     Scene1.svg[i].x = canvas.width * img[i].x;
@@ -102,7 +103,7 @@ var circle = function (i) {
     var that = this;
     that.i = i;
     var c = new createjs.Shape();
-    c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 180,63,5); //canvas.width * 0.045 set color by default > lan.scene1[level][i].color
+    c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 230,67,5); //canvas.width * 0.045 set color by default > lan.scene1[level][i].color
 
 //    var lan = Scene1.lan.scene1[Scene1.level];
 //    var label = new createjs.Text(lan[i].drag, "bold 25px Arial", "#FFFFFF");
@@ -117,17 +118,18 @@ var circle = function (i) {
         },
         "images":[Scene1.loader.getResult("names")],
         "frames":{
-            "regX":0,
-            "regY":0,
-            "height":63,
-            "width":180,
-            "count":24
+            "regX":30,
+            "regY":30,
+            "height":130,
+            "width":340,
+            "count":27
         }
     });
     var name = new createjs.Sprite(names,"drag");
+    name.scaleX=name.scaleY=canvas.width*0.00065;
 
     var dragger = new createjs.Container();
-    dragger.x = dragger.y = 100;
+    dragger.x = dragger.y = 20;
     dragger.addChild(c, name);
     stage.addChild(dragger);
     dragger.on("pressmove", function (evt) {
@@ -136,7 +138,7 @@ var circle = function (i) {
         c.graphics._fillInstructions[0].params[1]="transparent";
 //        label.font = "bold 40px Arial";
 //        label.y = -20;
-        evt.currentTarget.x = evt.stageX-90;
+        evt.currentTarget.x = evt.stageX-115;
         evt.currentTarget.y = evt.stageY-40;
         stage.update();
     });
@@ -145,8 +147,8 @@ var circle = function (i) {
 //        label.font = "bold 25px Arial";
 //        label.y = -12;
         var bitmap = Scene1.svg[i];
-        if ((evt.currentTarget.x+90 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
-            if ((evt.currentTarget.y+40 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 140)))) {
+        if ((evt.currentTarget.x+115 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
+            if ((evt.currentTarget.y+80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
                 dragger.removeAllEventListeners();
                 dragger.removeAllChildren();
                 Scene1.svg[i].children[1].gotoAndStop("done");
@@ -156,7 +158,7 @@ var circle = function (i) {
                 Scene1.win += 1;
             }
         }
-        if (Scene1.win === Scene1.lan.scene1[Scene1.level].length) {
+        if (Scene1.win === Scene1.config[Scene1.level].img.length) {
             stage.removeAllChildren();
             Scene1.win = 0;
             init();

@@ -16,52 +16,47 @@
         ],
         "img": [
             {
-                "imgUrl": "assets/scene1/1/img/cat.svg",
+                "imgUrl": "assets/scene1/1/img/rabbit.svg",
                 "x": 0.01,
                 "y": 0.45
             },
             {
-                "imgUrl": "assets/scene1/1/img/chicken.svg",
+                "imgUrl": "assets/scene1/1/img/fox.svg",
                 "x": 0.1,
                 "y": 0.6
             },
             {
-                "imgUrl": "assets/scene1/1/img/cow.svg",
+                "imgUrl": "assets/scene1/1/img/elephant.svg",
                 "x": 0.3,
                 "y": 0.65
             },
             {
-                "imgUrl": "assets/scene1/1/img/dog.svg",
+                "imgUrl": "assets/scene1/1/img/reindeer.svg",
                 "x": 0.4,
                 "y": 0.4
             },
             {
-                "imgUrl": "assets/scene1/1/img/frog.svg",
+                "imgUrl": "assets/scene1/1/img/seal.svg",
                 "x": 0.5,
                 "y": 0.55
             },
             {
-                "imgUrl": "assets/scene1/1/img/horse.svg",
-                "x": 0.6,
+                "imgUrl": "assets/scene1/1/img/koala.svg",
+                "x": 0.7,
                 "y": 0.5
             },
             {
-                "imgUrl": "assets/scene1/1/img/pig.svg",
-                "x": 0.7,
+                "imgUrl": "assets/scene1/1/img/hippo.svg",
+                "x": 0.6,
                 "y": 0.75
             },
             {
-                "imgUrl": "assets/scene1/1/img/rabbit.svg",
+                "imgUrl": "assets/scene1/1/img/boar.svg",
                 "x": 0.8,
                 "y": 0.72
             },
             {
-                "imgUrl": "assets/scene1/1/img/sheep.svg",
-                "x": 0.2,
-                "y": 0.72
-            },
-            {
-                "imgUrl": "assets/scene1/1/img/wolf.svg",
+                "imgUrl": "assets/scene1/1/img/dog.svg",
                 "x": 0.9,
                 "y": 0.35
             }
