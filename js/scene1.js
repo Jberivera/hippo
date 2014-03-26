@@ -59,13 +59,27 @@ var loadManifest = function () {
         backg.scaleY = canvas.height / backg.image.height;
         stage.addChild(backg);
     }
+
+
 //  imgs = array with images
     var img = level.img;
+    var random=[];
+    for(var i=0;i<img.length;i++){
+        var rd=Math.floor(Math.random()*img.length);
+        for(var j=0;j<random.length;j++){
+            if(random[j]===rd){
+                rd=Math.floor(Math.random()*img.length);
+                j=-1;
+            }
+        }
+        random.push(rd);
+    }
+
     for (var i = 0; i < img.length; i++) {
-        new image(i,loader,img);
+        new image(random[i],loader,img);
     }
     for (var i = 0; i < img.length; i++) {
-        new draggable(i);
+        new draggable(random[i]);
     }
     stage.update();
 };
