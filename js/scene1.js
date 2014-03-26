@@ -119,7 +119,7 @@ var circle = function (i) {
         "images":[Scene1.loader.getResult("names")],
         "frames":{
             "regX":30,
-            "regY":30,
+            "regY":25,
             "height":130,
             "width":340,
             "count":27
@@ -127,6 +127,7 @@ var circle = function (i) {
     });
     var name = new createjs.Sprite(names,"drag");
     name.scaleX=name.scaleY=canvas.width*0.00065;
+    c.scaleX = c.scaleY = canvas.width*0.0008;
 
     var dragger = new createjs.Container();
     dragger.x = dragger.y = 20;
