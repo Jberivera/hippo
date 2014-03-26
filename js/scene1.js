@@ -65,7 +65,7 @@ var loadManifest = function () {
         new image(i,loader,img);
     }
     for (var i = 0; i < img.length; i++) {
-        new circle(i);
+        new draggable(i);
     }
     stage.update();
 };
@@ -99,7 +99,7 @@ var image=function(i,loader,img){
     Scene1.svg[i].addChild(svg,name);
     stage.addChild(Scene1.svg[i]);
 };
-var circle = function (i) {
+var draggable = function (i) {
     var that = this;
     that.i = i;
     var c = new createjs.Shape();
@@ -126,8 +126,13 @@ var circle = function (i) {
         }
     });
     var name = new createjs.Sprite(names,"drag");
+
     name.scaleX=name.scaleY=canvas.width*0.00065;
+
+    var cwidth=230*canvas.width*0.0008;
+    var cheight=67*canvas.height*0.0008;
     c.scaleX = c.scaleY = canvas.width*0.0008;
+
 
     var dragger = new createjs.Container();
     dragger.x = dragger.y = 20;
@@ -139,8 +144,8 @@ var circle = function (i) {
         c.graphics._fillInstructions[0].params[1]="transparent";
 //        label.font = "bold 40px Arial";
 //        label.y = -20;
-        evt.currentTarget.x = evt.stageX-115;
-        evt.currentTarget.y = evt.stageY-40;
+        evt.currentTarget.x = evt.stageX-cwidth/2;
+        evt.currentTarget.y = evt.stageY-cheight;
         stage.update();
     });
     dragger.on("pressup", function (evt) {
