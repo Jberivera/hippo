@@ -5,9 +5,11 @@ var Scene1 = new function () {
     this.win = 0;
     this.svg = [];
 
-    this.initialize = function (lan, level) {
+    this.initialize = function (lan, level, bool) {
         that.lan = lan;
         that.level = level - 1;
+        that.bool=bool;
+        stage.removeAllChildren();
         var rect = new createjs.Shape();
         rect.graphics.beginFill("#E8D24A").drawRect(0, 0, canvas.width, canvas.height);
         stage.addChild(rect);
@@ -61,7 +63,6 @@ var loadManifest = function () {
     var randomPosition=Random(img);
 
     for (var i = 0; i < img.length; i++) {
-        console.log(randomNames[i]);
         new image(randomNames[i],loader,position[randomPosition[i]]);
     }
     for (var i = 0; i < img.length; i++) {
@@ -86,26 +87,27 @@ var Random=function(array){
 var image=function(i,loader,position){
     var svg = new createjs.Bitmap(loader.getResult("img" + i));
     svg.scaleX = svg.scaleY = canvas.width * 0.0005;
+    if(Scene1.bool){
+        var j=i*3;
+        var names=new createjs.SpriteSheet({
+            "animations":{
+                "gray":[j],
+                "drag":[j+1],
+                "done":[j+2]
+            },
+            "images":[Scene1.loader.getResult("names")],
+            "frames":{
+                "regX":90,
+                "regY":85,
+                "height":130,
+                "width":340,
+                "count":27
+            }
+        });
 
-    var j=i*3;
-    var names=new createjs.SpriteSheet({
-        "animations":{
-            "gray":[j],
-            "drag":[j+1],
-            "done":[j+2]
-        },
-        "images":[Scene1.loader.getResult("names")],
-        "frames":{
-            "regX":90,
-            "regY":85,
-            "height":130,
-            "width":340,
-            "count":27
-        }
-    });
-
-    var name = new createjs.Sprite(names,"gray");
-    name.scaleX=name.scaleY=canvas.width*0.00065;
+        var name = new createjs.Sprite(names,"gray");
+        name.scaleX=name.scaleY=canvas.width*0.00065;
+    }
 
     Scene1.svg[i] = new createjs.Container();
     Scene1.svg[i].x = canvas.width * position.x;
@@ -161,15 +163,28 @@ var draggable = function (i) {
         if ((evt.currentTarget.x+115 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
             if ((evt.currentTarget.y+80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
                 dragger.removeAllEventListeners();
-                dragger.removeAllChildren();
-                Scene1.svg[i].children[1].gotoAndStop("done");
                 Scene1.win += 1;
+                if(Scene1.bool){
+                    dragger.removeAllChildren();
+                    Scene1.svg[i].children[1].gotoAndStop("done");
+                }else{
+                    name.gotoAndStop("done");
+                    dragger.y=bitmap.y-35;
+                    dragger.x=bitmap.x-50;
+                }
             }
         }
         if (Scene1.win === Scene1.config[Scene1.level].img.length) {
-            stage.removeAllChildren();
+            if(Scene1.bool){
+                Scene1.initialize(language, Scene1.level+1 , false);
+            }else{
+                var newGame=setInterval(function(){
+                    clearInterval(newGame);
+                    Scene1.initialize(language, 2 , true);
+                },1000);
+            }
             Scene1.win = 0;
-            init();
+//            init();
         }
         stage.update();
     });

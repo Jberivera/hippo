@@ -52,8 +52,15 @@
         ]
     },
     {
-        "backg": [
-            0
+        "backg": "assets/scene1/2/backg/hippo.svg",
+        "img":[
+            "assets/scene1/2/img/men-at-work.png"
+        ],
+        "position":[
+            {
+                "x": 0,
+                "y": 1.5
+            }
         ]
     }
 ]

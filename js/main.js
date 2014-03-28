@@ -95,7 +95,7 @@ var sceneImage = function (i) {
         stage.removeChild(scene);
         if (Scenes[i]) {
             stage.removeAllChildren();
-            Scenes[i].initialize(language, 1);
+            Scenes[i].initialize(language, 1 , true);
         }
         stage.update();
     });
