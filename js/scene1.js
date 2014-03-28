@@ -20,7 +20,6 @@ var Scene1 = new function () {
         that.loader.addEventListener("complete", loaderComplete);
         that.loader.loadManifest([
             {id: "names", src: "assets/scene1/" + level + "/img/lan/names_" + lan + ".png", type: createjs.LoadQueue.IMAGE},
-            {id: "lan", src: "lan/"+lan+".json", type: createjs.LoadQueue.JSON},
             {id: "config", src: "config/scene1-config.json", type: createjs.LoadQueue.JSON}
         ]);
     };
@@ -35,11 +34,9 @@ var loaderComplete = function () {
     Scene1.Queue.addEventListener("progress", queueProgress);
     Scene1.Queue.addEventListener("complete", loadManifest);
     var Manifest = [];
-    for (var i = 0; i < level.backg.length; i++) {
-        Manifest.push({id: "backg" + i, src: level.backg[i].backgUrl, type: createjs.LoadQueue.IMAGE});
-    }
+    Manifest.push({id: "backg", src: level.backg, type: createjs.LoadQueue.IMAGE});
     for (var i = 0; i < level.img.length; i++) {
-        Manifest.push({id: "img" + i, src: level.img[i].imgUrl, type: createjs.LoadQueue.IMAGE});
+        Manifest.push({id: "img" + i, src: level.img[i], type: createjs.LoadQueue.IMAGE});
     }
     Scene1.Queue.loadManifest(Manifest);
 };
@@ -53,37 +50,40 @@ var queueProgress = function (event) {
 var loadManifest = function () {
     var level = Scene1.config[Scene1.level];
     var loader = Scene1.Queue;
-    for (var i = 0; i < level.backg.length; i++) {
-        var backg = new createjs.Bitmap(loader.getResult("backg" + i));
-        backg.scaleX = canvas.width / backg.image.width;
-        backg.scaleY = canvas.height / backg.image.height;
-        stage.addChild(backg);
-    }
+    var backg = new createjs.Bitmap(loader.getResult("backg"));
+    backg.scaleX = canvas.width / backg.image.width;
+    backg.scaleY = canvas.height / backg.image.height;
+    stage.addChild(backg);
 
-
-//  imgs = array with images
     var img = level.img;
+    var position=level.position;
+    var randomNames=Random(img);
+    var randomPosition=Random(img);
+
+    for (var i = 0; i < img.length; i++) {
+        console.log(randomNames[i]);
+        new image(randomNames[i],loader,position[randomPosition[i]]);
+    }
+    for (var i = 0; i < img.length; i++) {
+        new draggable(randomNames[i]);
+    }
+    stage.update();
+};
+var Random=function(array){
     var random=[];
-    for(var i=0;i<img.length;i++){
-        var rd=Math.floor(Math.random()*img.length);
+    for(var i=0;i<array.length;i++){
+        var rd=Math.floor(Math.random()*array.length);
         for(var j=0;j<random.length;j++){
             if(random[j]===rd){
-                rd=Math.floor(Math.random()*img.length);
+                rd=Math.floor(Math.random()*array.length);
                 j=-1;
             }
         }
         random.push(rd);
     }
-
-    for (var i = 0; i < img.length; i++) {
-        new image(random[i],loader,img);
-    }
-    for (var i = 0; i < img.length; i++) {
-        new draggable(random[i]);
-    }
-    stage.update();
-};
-var image=function(i,loader,img){
+    return random;
+}
+var image=function(i,loader,position){
     var svg = new createjs.Bitmap(loader.getResult("img" + i));
     svg.scaleX = svg.scaleY = canvas.width * 0.0005;
 
@@ -108,8 +108,8 @@ var image=function(i,loader,img){
     name.scaleX=name.scaleY=canvas.width*0.00065;
 
     Scene1.svg[i] = new createjs.Container();
-    Scene1.svg[i].x = canvas.width * img[i].x;
-    Scene1.svg[i].y = canvas.height * img[i].y;
+    Scene1.svg[i].x = canvas.width * position.x;
+    Scene1.svg[i].y = canvas.height * position.y;
     Scene1.svg[i].addChild(svg,name);
     stage.addChild(Scene1.svg[i]);
 };
@@ -117,12 +117,8 @@ var draggable = function (i) {
     var that = this;
     that.i = i;
     var c = new createjs.Shape();
-    c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 230,67,5); //canvas.width * 0.045 set color by default > lan.scene1[level][i].color
+    c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 230,67,5);
 
-//    var lan = Scene1.lan.scene1[Scene1.level];
-//    var label = new createjs.Text(lan[i].drag, "bold 25px Arial", "#FFFFFF");
-//    label.textAlign = "center";
-//    label.y = -12;
     var j=i*3;
     var names=new createjs.SpriteSheet({
         "animations":{
@@ -156,25 +152,17 @@ var draggable = function (i) {
         // currentTarget will be the container that the event listener was added to:
 //        name.scaleX = name.scaleY = 1.35;
         c.graphics._fillInstructions[0].params[1]="transparent";
-//        label.font = "bold 40px Arial";
-//        label.y = -20;
         evt.currentTarget.x = evt.stageX-cwidth/2;
         evt.currentTarget.y = evt.stageY-cheight;
         stage.update();
     });
     dragger.on("pressup", function (evt) {
-//        name.scaleX = name.scaleY = 1;
-//        label.font = "bold 25px Arial";
-//        label.y = -12;
         var bitmap = Scene1.svg[i];
         if ((evt.currentTarget.x+115 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
             if ((evt.currentTarget.y+80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
                 dragger.removeAllEventListeners();
                 dragger.removeAllChildren();
                 Scene1.svg[i].children[1].gotoAndStop("done");
-//                label.font = "bold 32px Arial";
-//                label.color = "#" + Math.floor(Math.random() * 999);
-//                label.y = -100;
                 Scene1.win += 1;
             }
         }

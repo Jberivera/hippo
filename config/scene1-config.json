@@ -1,64 +1,53 @@
 [
     {
-        "backg": [
-            {
-                "backgUrl": "assets/scene1/1/backg/landscape1.svg"
-            },
-            {
-                "backgUrl": "assets/scene1/1/backg/landscape2.svg"
-            },
-            {
-                "backgUrl": "assets/scene1/1/backg/landscape3.svg"
-            },
-            {
-                "backgUrl": "assets/scene1/1/backg/landscape4.svg"
-            }
-        ],
+        "backg": "assets/scene1/1/backg/landscape.svg",
         "img": [
+            "assets/scene1/1/img/reindeer.svg",
+            "assets/scene1/1/img/seal.svg",
+            "assets/scene1/1/img/koala.svg",
+            "assets/scene1/1/img/rabbit.svg",
+            "assets/scene1/1/img/fox.svg",
+            "assets/scene1/1/img/elephant.svg",
+            "assets/scene1/1/img/hippo.svg",
+            "assets/scene1/1/img/boar.svg",
+            "assets/scene1/1/img/dog.svg"
+        ],
+        "position":[
             {
-                "imgUrl": "assets/scene1/1/img/rabbit.svg",
-                "x": 0.01,
+                "x": 0.025,
                 "y": 0.45
             },
             {
-                "imgUrl": "assets/scene1/1/img/fox.svg",
                 "x": 0.1,
-                "y": 0.6
+                "y": 0.7
             },
             {
-                "imgUrl": "assets/scene1/1/img/elephant.svg",
                 "x": 0.3,
                 "y": 0.65
             },
             {
-                "imgUrl": "assets/scene1/1/img/reindeer.svg",
                 "x": 0.4,
                 "y": 0.4
             },
             {
-                "imgUrl": "assets/scene1/1/img/seal.svg",
-                "x": 0.5,
+                "x": 0.52,
                 "y": 0.55
             },
             {
-                "imgUrl": "assets/scene1/1/img/koala.svg",
                 "x": 0.7,
                 "y": 0.5
             },
             {
-                "imgUrl": "assets/scene1/1/img/hippo.svg",
                 "x": 0.6,
-                "y": 0.75
+                "y": 0.8
             },
             {
-                "imgUrl": "assets/scene1/1/img/boar.svg",
-                "x": 0.8,
+                "x": 0.85,
                 "y": 0.72
             },
             {
-                "imgUrl": "assets/scene1/1/img/dog.svg",
-                "x": 0.9,
-                "y": 0.35
+                "x": 0.75,
+                "y": 0.25
             }
         ]
     },

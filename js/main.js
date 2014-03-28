@@ -64,6 +64,7 @@ var layout = {
     i: null,
     y: canvas.height * 0.2 + 40
 };
+
 var sceneImage = function (i) {
     var scene = new createjs.Bitmap(Queue.getResult("scene" + i));
 
@@ -100,13 +101,14 @@ var sceneImage = function (i) {
     });
     stage.update();
 };
+
 var settingButton = function () {
     var setting = new createjs.Bitmap(Queue.getResult("setting"));
     setting.x = canvas.width - canvas.width*0.10;
     setting.y = 25;
     stage.addChild(setting);
     setting.on("click", function () {
-        if(stage.children.length!=7){
+        if(stage.children.length!=6){
             settingPanel();
         }
     });
@@ -114,6 +116,7 @@ var settingButton = function () {
 var lanOptions = ["es", "en" , "es"];
 
 //this functions draws a setting panel
+
 var settingPanel = function () {
     var rect = new createjs.Shape();
     rect.graphics.beginFill("#5A3EA1").drawRect(0, 0, canvas.width - 200, canvas.height - 200);
