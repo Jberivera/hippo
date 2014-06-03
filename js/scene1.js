@@ -1,7 +1,7 @@
 var Scene1 = {};
 (function () {
     "use strict";
-    function random(array) {
+    var random = function (array) {
         var rand, i, j, rd;
         rand = [];
         for (i = 0; i < array.length; i += 1) {
@@ -15,9 +15,9 @@ var Scene1 = {};
             rand.push(rd);
         }
         return rand;
-    }
+    };
 
-    function Image(obj) {
+    var Image = function (obj) {
         //obj = {i : number, q : queueObject, p : position}
         var svg, j, names, name, array;
         svg = new createjs.Bitmap(obj.q.getResult("img" + obj.i));
@@ -49,9 +49,9 @@ var Scene1 = {};
         array[obj.i].y = canvas.height * obj.p.y;
         array[obj.i].addChild(svg, name);
         stage.addChild(array[obj.i]);
-    }
+    };
 
-    function Draggable(i) {
+    var Draggable = function (i) {
         var that, c, j, names, name, cwidth, cheight, dragger;
         that = this;
         that.i = i;
@@ -130,17 +130,17 @@ var Scene1 = {};
             stage.update();
         });
         stage.update();
-    }
+    };
 
-    function queueProgress(event) {
+    var queueProgress = function (event) {
         var value = event.loaded / event.total;
         Scene1.getProgress().graphics.clear()
             .beginFill("#fff").drawRoundRect(-103, -13, 306, 26, 13)
             .beginFill("#0D83BA").drawRoundRect(-100, -10, value * 300, 20, 10);
         stage.update();
-    }
+    };
 
-    function loadComplete() {
+    var loadComplete = function () {
         var level, queue, backg, img, position, randomNames, randomPosition, i;
         level = Scene1.getConfig()[Scene1.getValues().level];//
         queue = Scene1.getQueue();
@@ -161,7 +161,7 @@ var Scene1 = {};
             new Draggable(randomNames[i]);
         }
         stage.update();
-    }
+    };
 
     Scene1 = (function () {
         var config, queue, loader, win, svg, progress;
