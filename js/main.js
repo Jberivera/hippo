@@ -19,7 +19,7 @@ var ui = document.getElementById("uiCanvas");
 ui.width = canvas.width = container.offsetWidth;
 ui.height = canvas.height = container.offsetHeight;
 
-var Queue;
+var Queue = {};
 
 //Vector that contains all scenes for easy reference them on Scene() function
 var Scenes = [null, Scene1];
@@ -89,13 +89,13 @@ var sceneImage = function (i) {
         scene.y = y;
     }
     //end layout logic
-    
+
     stage.addChild(scene);
     scene.on("click", function () {
         stage.removeChild(scene);
         if (Scenes[i]) {
             stage.removeAllChildren();
-            Scenes[i].initialize(language, 1 , true);
+            Scenes[i].initialize({lan: language, level: 1, bool: true});
         }
         stage.update();
     });
@@ -104,11 +104,11 @@ var sceneImage = function (i) {
 
 var settingButton = function () {
     var setting = new createjs.Bitmap(Queue.getResult("setting"));
-    setting.x = canvas.width - canvas.width*0.10;
+    setting.x = canvas.width - canvas.width * 0.10;
     setting.y = 25;
     stage.addChild(setting);
     setting.on("click", function () {
-        if(stage.children.length!=6){
+        if (stage.children.length != 6) {
             settingPanel();
         }
     });
@@ -122,21 +122,21 @@ var settingPanel = function () {
     rect.graphics.beginFill("#5A3EA1").drawRect(0, 0, canvas.width - 200, canvas.height - 200);
     var ok = new createjs.Shape();
     console.log(rect);
-    var okwidth=rect.graphics._activeInstructions[0].params[2]*0.35;
-    var okheight=rect.graphics._activeInstructions[0].params[3];
-    ok.graphics.beginFill("#57998C").drawRect(okwidth, okheight-70, 370, 70);
+    var okwidth = rect.graphics._activeInstructions[0].params[2] * 0.35;
+    var okheight = rect.graphics._activeInstructions[0].params[3];
+    ok.graphics.beginFill("#57998C").drawRect(okwidth, okheight - 70, 370, 70);
 
     var settings = new createjs.Container();
     settings.x = 100;
     settings.y = 100;
-    settings.addChild(rect,ok);
+    settings.addChild(rect, ok);
     for (var i = 0; i < lanOptions.length; i++) {
         settings.addChild(new lanOption(lanOptions[i], i).c);
     }
-    settings.on("click",function(){
+    settings.on("click", function () {
 
     });
-    ok.on("click",function(){
+    ok.on("click", function () {
         stage.removeChild(ok.parent);
         stage.update();
     });
@@ -144,23 +144,23 @@ var settingPanel = function () {
     stage.update();
 };
 var lanOption = function (lan, i) {
-    this.c=new createjs.Container();//Container
+    this.c = new createjs.Container();//Container
     var opt = new createjs.Shape();
-    opt.graphics.beginFill("#000").drawRect(100 * (i + 1) + 150 * i, 100, 150,150);
+    opt.graphics.beginFill("#000").drawRect(100 * (i + 1) + 150 * i, 100, 150, 150);
     var label = new createjs.Text(lan, "bold 25px Arial", "#FFFFFF");
     label.textAlign = "center";
-    label.x=175 * (i + 1) + 75 * i;
+    label.x = 175 * (i + 1) + 75 * i;
     label.y = 160;
-    this.c.addChild(opt,label);
+    this.c.addChild(opt, label);
     var that = this;
     this.c.on("click", function () {
         language = lan;
         console.log(that.c.parent);
-        var parent=that.c.parent.children;
-        for(var j=2;j<parent.length;j++){
-            parent[j].children[0].graphics._fillInstructions[0].params[1]="#000";
+        var parent = that.c.parent.children;
+        for (var j = 2; j < parent.length; j++) {
+            parent[j].children[0].graphics._fillInstructions[0].params[1] = "#000";
         }
-        opt.graphics._fillInstructions[0].params[1]="#AD4A3A";
+        opt.graphics._fillInstructions[0].params[1] = "#AD4A3A";
         stage.update();
     });
 };
