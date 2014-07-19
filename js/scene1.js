@@ -1,4 +1,5 @@
 var Scene1 = {};
+
 (function () {
     "use strict";
     var random = function (array) {
@@ -20,6 +21,7 @@ var Scene1 = {};
     var Image = function (obj) {
         //obj = {i : number, q : queueObject, p : position}
         var svg, j, names, name, array;
+
         svg = new createjs.Bitmap(obj.q.getResult("img" + obj.i));
         svg.scaleX = svg.scaleY = canvas.width * 0.0005;
         if (Scene1.getValues().bool) {
@@ -132,91 +134,39 @@ var Scene1 = {};
         stage.update();
     };
 
-    var queueProgress = function (event) {
-        var value = event.loaded / event.total;
-        Scene1.getProgress().graphics.clear()
-            .beginFill("#fff").drawRoundRect(-103, -13, 306, 26, 13)
-            .beginFill("#0D83BA").drawRoundRect(-100, -10, value * 300, 20, 10);
-        stage.update();
+    var obj={
+        progress:{},
+        config:{},
+        queue:{}
     };
-
-    var loadComplete = function () {
-        var level, queue, backg, img, position, randomNames, randomPosition, i;
-        level = Scene1.getConfig()[Scene1.getValues().level];//
-        queue = Scene1.getQueue();
-        backg = new createjs.Bitmap(queue.getResult("backg"));
-        backg.scaleX = canvas.width / backg.image.width;
-        backg.scaleY = canvas.height / backg.image.height;
-        stage.addChild(backg);
-
-        img = level.img;//level.img is equal to an array of strings, urls of svg files
-        position = level.position; //level.position is equal to an array of objects like this {x:0.5 , y:0.4}
-        randomNames = random(img);
-        randomPosition = random(img);
-
-        for (i = 0; i < img.length; i += 1) {
-            new Image({i: randomNames[i], q: queue, p: position[randomPosition[i]]});
-        }
-        for (i = 0; i < img.length; i += 1) {
-            new Draggable(randomNames[i]);
-        }
-        stage.update();
-    };
-
     Scene1 = (function () {
-        var config, queue, loader, win, svg, progress;
-        queue = {};
-        loader = {};
+        var win, svg;
         win = 0;
         svg = [];
         return {
-            initialize: function (values) {
-                // Values = {lan: "en", level: 1, bool: true}
-                this.getValues = function () {
-                    return values;
-                };
+            getName:function(){
+                return "scene1";
+            },
+            step: function(level){
+                var img, position, randomNames, randomPosition, i;
+                img = level.img;//level.img is equal to an array of strings, urls of svg files
+                position = level.position; //level.position is equal to an array of objects like {x:0.5 , y:0.4}
+                randomNames = random(img);
+                randomPosition = random(img);
 
-                stage.removeAllChildren();
-                var rect = new createjs.Shape();
-                rect.graphics.beginFill("#E8D24A").drawRect(0, 0, canvas.width, canvas.height);
-                stage.addChild(rect);
-
-                progress = new createjs.Shape();
-                progress.x = canvas.width / 2;
-                progress.y = canvas.height * 0.5;
-                stage.addChild(progress);
-
-                loader = new createjs.LoadQueue();
-
-                loader.addEventListener("complete", function () {
-                    var level, Manifest, i;
-                    values.lan = loader.getResult("lan");
-                    values.names = loader.getResult("names");//returns a png file, an sprite with names
-                    config = loader.getResult("config");
-                    level = config[values.level];//returns an object with all info about current level
-                    queue = new createjs.LoadQueue();
-                    queue.addEventListener("progress", queueProgress);
-                    queue.addEventListener("complete", loadComplete);
-
-                    Manifest = [];
-                    Manifest.push({id: "backg", src: level.backg, type: createjs.LoadQueue.IMAGE});
-                    for (i = 0; i < level.img.length; i += 1) {
-                        Manifest.push({id: "img" + i, src: level.img[i], type: createjs.LoadQueue.IMAGE});
-                    }
-                    queue.loadManifest(Manifest);
-                });
-
-                loader.loadManifest([
-                    {id: "names", src: "assets/scene1/" + values.level + "/img/lan/names_" + values.lan + ".png", type: createjs.LoadQueue.IMAGE},
-                    {id: "config", src: "config/scene1-config.json", type: createjs.LoadQueue.JSON}
-                ]);
-                values.level -= 1;
+                for (i = 0; i < img.length; i += 1) {
+                    new Image({i: randomNames[i], q: obj.queue, p: position[randomPosition[i]]});
+                }
+                for (i = 0; i < img.length; i += 1) {
+                    new Draggable(randomNames[i]);
+                }
+                stage.update();
             },
             getQueue: function () {
-                return queue;
+                return obj.queue;
             },
             getConfig: function () {
-                return config;//return an array of objects [{},{},{}]
+                return obj.config;//return an array of objects [{},{},{}]
             },
             setWin: function (n) {
                 win = n === 0 ? 0 : win + n;
@@ -228,8 +178,9 @@ var Scene1 = {};
                 return svg;//return a vector
             },
             getProgress: function () {
-                return progress;
+                return obj.progress;
             }
         };
     }());
+    Scene1.initialize = setUp(obj,Scene1);
 }());

@@ -22,7 +22,7 @@ ui.height = canvas.height = container.offsetHeight;
 var Queue = {};
 
 //Vector that contains all scenes for easy reference them on Scene() function
-var Scenes = [null, Scene1];
+var Scenes = [null, Scene1, Scene2];
 
 var language = "es";//Global Language
 
