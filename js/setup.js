@@ -1,13 +1,14 @@
 var loadComplete = function (scene) {
     return function () {
-        var level, queue, backg;
-        level = scene.getConfig()[scene.getValues().level];//
+        var dataLevel, queue, backg;
+        dataLevel = scene.getConfig()[scene.getValues().level];//
         queue = scene.getQueue();
         backg = new createjs.Bitmap(queue.getResult("backg"));
+        backg.name = "backg";
         backg.scaleX = canvas.width / backg.image.width;
         backg.scaleY = canvas.height / backg.image.height;
         stage.addChild(backg);
-        scene.step(level);
+        scene.step(dataLevel);
     };
 };
 
@@ -21,15 +22,16 @@ var queueProgress = function (scene) {
     }
 };
 
-var setUp = function(obj,scene) {
+var setUp = function(obj, scene) {
+
     var loader;
+
     return function (values) {
-        // Values = {lan: "en", level: 1, bool: true}
-        level = scene.getValues = function () {
+        // values = {lan: "en", level: 1, bool: true}
+        scene.getValues = function () {
             return values;
         };
 
-        stage.removeAllChildren();
         var rect = new createjs.Shape();
         rect.graphics.beginFill("#E8D24A").drawRect(0, 0, canvas.width, canvas.height);
         stage.addChild(rect);
@@ -42,20 +44,22 @@ var setUp = function(obj,scene) {
         loader = new createjs.LoadQueue();
 
         loader.addEventListener("complete", function () {
-            var level, Manifest, i;
-            values.lan = loader.getResult("lan");
+            var dataLevel, Manifest, i;
+            Manifest = [];
+
             values.names = loader.getResult("names");//returns png file a sprite with names
             obj.config = loader.getResult("config");
-            level = obj.config[values.level];//returns an object with all info about current level
+            dataLevel = obj.config[values.level];//returns an object with all info about current level
             obj.queue = new createjs.LoadQueue();
             obj.queue.addEventListener("progress", queueProgress(scene));
             obj.queue.addEventListener("complete", loadComplete(scene));
 
-            Manifest = [];
-            Manifest.push({id: "backg", src: level.backg, type: createjs.LoadQueue.IMAGE});
-            for (i = 0; i < level.img.length; i += 1) {
-                Manifest.push({id: "img" + i, src: level.img[i], type: createjs.LoadQueue.IMAGE});
+            Manifest.push({id: "backg", src: dataLevel.backg, type: createjs.LoadQueue.IMAGE});
+
+            for (i = 0; i < dataLevel.img.length; i += 1) {
+                Manifest.push({id: "img" + i, src: dataLevel.img[i], type: createjs.LoadQueue.IMAGE});
             }
+
             obj.queue.loadManifest(Manifest);
         });
 

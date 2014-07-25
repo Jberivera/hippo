@@ -1,23 +1,8 @@
 var stage;
-//getting container
-var container = document.getElementById("gameFrame");
 
-//setting container width and height
-if (window.innerWidth > window.innerHeight) {
-    container.style.width = window.innerWidth + "px";
-    container.style.height = window.innerHeight + "px";
-} else {
-    container.style.width = window.innerHeight + "px";
-    container.style.height = window.innerWidth + "px";
-}
-//getting game canvas component
 var canvas = document.getElementById("gameCanvas");
 //getting ui canvas component
 var ui = document.getElementById("uiCanvas");
-
-//setting canvas width and height
-ui.width = canvas.width = container.offsetWidth;
-ui.height = canvas.height = container.offsetHeight;
 
 var Queue = {};
 
@@ -26,9 +11,38 @@ var Scenes = [null, Scene1, Scene2];
 
 var language = "es";//Global Language
 
+var setAspectRatio = (function () {
+
+    var ratio = 1920 / 1080;
+
+    return function () {
+        ui.width = canvas.width = window.innerWidth;
+        ui.height = canvas.height = window.innerWidth / ratio;
+
+        if(canvas.height < window.innerHeight){
+            var diferencia = window.innerHeight - canvas.height;
+            canvas.style.marginTop = ui.style.marginTop = diferencia/2 + "px";
+            console.log(diferencia);
+        }else{
+            canvas.style.marginTop = ui.style.marginTop = "0px";
+        }
+
+    console.log("canvas.width:" + canvas.width);
+    console.log("canvas.height:" + canvas.height);
+    console.log("---");
+    };
+}());
+
 var init = function () {
+
     stage = new createjs.Stage(canvas);
+    stageUi = new createjs.Stage(ui);
+
     createjs.Touch.enable(stage);
+    createjs.Touch.enable(stageUi);
+
+    setAspectRatio();
+
     Queue = new createjs.LoadQueue();
     Queue.addEventListener("complete", selectionPanel);
     Queue.Manifest = [
@@ -50,11 +64,19 @@ var selectionPanel = function () {
 
     //scenes images
     for (var i = 1; i < Queue.Manifest.length; i++) {
-        new sceneImage(i);
+        sceneImage(i);
     }
 
     //setting button
-    new settingButton();
+    settingButton();
+
+    window.onresize = function () {
+        setAspectRatio();
+
+        stage.removeAllChildren();
+        selectionPanel();
+
+    };
 
     stage.update();
 };
@@ -108,20 +130,18 @@ var settingButton = function () {
     setting.y = 25;
     stage.addChild(setting);
     setting.on("click", function () {
-        if (stage.children.length != 6) {
-            settingPanel();
-        }
+        ui.style.zIndex = '1';
+        settingPanel();
     });
+    stage.update();
 };
-var lanOptions = ["es", "en" , "es"];
-
 //this functions draws a setting panel
 
 var settingPanel = function () {
+    var lanOptions = ["es", "en" , "es"];
     var rect = new createjs.Shape();
     rect.graphics.beginFill("#5A3EA1").drawRect(0, 0, canvas.width - 200, canvas.height - 200);
     var ok = new createjs.Shape();
-    console.log(rect);
     var okwidth = rect.graphics._activeInstructions[0].params[2] * 0.35;
     var okheight = rect.graphics._activeInstructions[0].params[3];
     ok.graphics.beginFill("#57998C").drawRect(okwidth, okheight - 70, 370, 70);
@@ -130,37 +150,36 @@ var settingPanel = function () {
     settings.x = 100;
     settings.y = 100;
     settings.addChild(rect, ok);
+    stageUi.addChild(settings);
     for (var i = 0; i < lanOptions.length; i++) {
-        settings.addChild(new lanOption(lanOptions[i], i).c);
+        settings.addChild(lanOption(lanOptions[i], i));
     }
-    settings.on("click", function () {
 
-    });
     ok.on("click", function () {
-        stage.removeChild(ok.parent);
-        stage.update();
+        ui.style.zIndex = '-1';
+        stageUi.removeAllChildren();
+        stageUi.update();
     });
-    stage.addChild(settings);
-    stage.update();
+
+    stageUi.update();
 };
 var lanOption = function (lan, i) {
-    this.c = new createjs.Container();//Container
+    var c = new createjs.Container();//Container
     var opt = new createjs.Shape();
     opt.graphics.beginFill("#000").drawRect(100 * (i + 1) + 150 * i, 100, 150, 150);
     var label = new createjs.Text(lan, "bold 25px Arial", "#FFFFFF");
     label.textAlign = "center";
     label.x = 175 * (i + 1) + 75 * i;
     label.y = 160;
-    this.c.addChild(opt, label);
-    var that = this;
-    this.c.on("click", function () {
+    c.addChild(opt, label);
+    c.on("click", function () {
         language = lan;
-        console.log(that.c.parent);
-        var parent = that.c.parent.children;
+        var parent = c.parent.children;
         for (var j = 2; j < parent.length; j++) {
             parent[j].children[0].graphics._fillInstructions[0].params[1] = "#000";
         }
         opt.graphics._fillInstructions[0].params[1] = "#AD4A3A";
-        stage.update();
+        stageUi.update();
     });
+    return c;
 };

@@ -6,8 +6,10 @@ var Scene2={};
         config:{},
         queue:{}
     };
-    Scene2=(function(){
-        var queue,config,win,svg,progress;
+    Scene2 = (function(){
+        var win, svg;
+        win = 0;
+        svg = [];
 
         return {
             getName:function(){
@@ -17,10 +19,10 @@ var Scene2={};
 
             },
             getQueue: function () {
-                return queue;
+                return obj.queue;
             },
             getConfig: function () {
-                return config;//return an array of objects [{},{},{}]
+                return obj.config;//return an array of objects [{},{},{}]
             },
             setWin: function (n) {
                 win = n === 0 ? 0 : win + n;
@@ -32,9 +34,9 @@ var Scene2={};
                 return svg;//return a vector
             },
             getProgress: function () {
-                return progress;
+                return obj.progress;
             }
         };
     }());
-    Scene2.initialize = setUp(obj,Scene2);
+    Scene2.initialize = setUp(obj, Scene2);
 }());
