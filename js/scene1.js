@@ -1,124 +1,107 @@
 var Scene1 = {};
 
 (function () {
-    "use strict";
+    'use strict';
     var cwidth, cheight;
-    var random = function (array) {
-        var rand, i, j, rd;
-        rand = [];
-        for (i = 0; i < array.length; i += 1) {
-            rd = Math.floor(Math.random() * array.length);
-            for (j = 0; j < rand.length; j += 1) {
-                if (rand[j] === rd) {
-                    rd = Math.floor(Math.random() * array.length);
-                    j = -1;
-                }
-            }
-            rand.push(rd);
-        }
-        return rand;
-    };
 
     var image = function (obj) {
-        //obj = {i : number, q : queueObject, p : {x:0.07 y:0.04}} p:position
-        var svg, j, names, name, array;
-
-        svg = new createjs.Bitmap(obj.q.getResult("img" + obj.i));
+        //obj = {i : number, q : queueObject, pos : {x:0.07 y:0.04}} p:position
+        var svg, j, sheet, name, array, i;
+        i = obj.i;
+        array = Scene1.getArray();
+        svg = new createjs.Bitmap(obj.q.getResult('img' + obj.i));
         svg.scaleX = svg.scaleY = canvas.width * 0.0005;
 
         if (Scene1.getValues().bool) {
             j = obj.i * 3;
-            names = new createjs.SpriteSheet({
-                "animations": {
-                    "gray": [j],
-                    "drag": [j + 1],
-                    "done": [j + 2]
+            sheet = new createjs.SpriteSheet({
+                'animations': {
+                    'gray': [j],
+                    'drag': [j + 1],
+                    'done': [j + 2]
                 },
-                "images": [Scene1.getValues().names],
-                "frames": {
-                    "regX": 90,
-                    "regY": 85,
-                    "height": 130,
-                    "width": 340,
-                    "count": 27
+                'images': [Scene1.getValues().words],
+                'frames': {
+                    'regX': 90,
+                    'regY': 85,
+                    'height': 130,
+                    'width': 340,
+                    'count': 27
                 }
             });
 
-            name = new createjs.Sprite(names, "gray");
+            name = new createjs.Sprite(sheet, 'gray');
             name.scaleX = name.scaleY = canvas.width * 0.00065;
         }
-        array = Scene1.getSvg();
-        array[obj.i] = new createjs.Container();
-        array[obj.i].name = "imageContainer" + obj.i;
-        array[obj.i].obj = obj;
-        array[obj.i].x = canvas.width * obj.p.x;
-        array[obj.i].y = canvas.height * obj.p.y;
-        array[obj.i].addChild(svg, name);
+
+        array[i] = new createjs.Container();
+        array[i].name = 'imageContainer' + i;
+        array[i].obj = obj;
+        array[i].x = canvas.width * obj.pos.x;
+        array[i].y = canvas.height * obj.pos.y;
+        array[i].addChild(svg, name);
         stage.addChild(array[obj.i]);
     };
 
     var draggable = function (i) {
-        var c, j, names, name, dragger;
+        var c, j, sheet, name, drag;
         c = new createjs.Shape();
-        c.graphics.beginFill("#" + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 230, 67, 5);
+        c.graphics.beginFill('#' + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 230, 67, 5);
 
         j = i * 3;
-        names = new createjs.SpriteSheet({
-            "animations": {
-                "gray": [j],
-                "drag": [j + 1],
-                "done": [j + 2]
+        sheet = new createjs.SpriteSheet({
+            'animations': {
+                'gray': [j],
+                'drag': [j + 1],
+                'done': [j + 2]
             },
-            "images": [Scene1.getValues().names],
-            "frames": {
-                "regX": 30,
-                "regY": 25,
-                "height": 130,
-                "width": 340,
-                "count": 27
+            'images': [Scene1.getValues().words],
+            'frames': {
+                'regX': 30,
+                'regY': 25,
+                'height': 130,
+                'width': 340,
+                'count': 27
             }
         });
-        name = new createjs.Sprite(names, "drag");
-        name.scaleX = name.scaleY = canvas.width * 0.00065;
+        name = new createjs.Sprite(sheet, 'drag');
 
-        cwidth = 230 * canvas.width * 0.0008;
-        cheight = 67 * canvas.height * 0.0008;
+        name.scaleX = name.scaleY = canvas.width * 0.00065;
         c.scaleX = c.scaleY = canvas.width * 0.0008;
 
+        drag = new createjs.Container();
+        drag.x = drag.y = 20;
+        drag.addChild(c, name);
+        drag.name = 'drag' + i;
 
-        dragger = new createjs.Container();
-        dragger.x = dragger.y = 20;
-        dragger.addChild(c, name);
-        dragger.name = "dragger" + i;
+        stage.addChild(drag);
 
-        stage.addChild(dragger);
+//        stage.scalebyClassName('drag');
 
-//        stage.scalebyClassName("dragger");
-
-        dragger.on("pressmove", function (evt) {
+        drag.on('pressmove', function (evt) {
             // currentTarget will be the container that the event listener was added to:
 //        name.scaleX = name.scaleY = 1.35;
-            c.graphics._fillInstructions[0].params[1] = "transparent";
+            c.graphics._fillInstructions[0].params[1] = 'transparent';
             evt.currentTarget.x = evt.stageX - cwidth / 2;
             evt.currentTarget.y = evt.stageY - cheight;
             stage.update();
         });
-        dragger.on("pressup", function (evt) {
+        drag.on('pressup', function (evt) {
             var bitmap, currentlevel;
-            bitmap = Scene1.getSvg()[i];
-
+            bitmap = Scene1.getArray()[i];
+            //Los if crean un cuadrado logico alrededor de cada imagen donde se puede soltar el Drag
             if ((evt.currentTarget.x + 115 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
                 if ((evt.currentTarget.y + 80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
-                    dragger.removeAllEventListeners();
+                    drag.removeAllEventListeners();
                     Scene1.setWin(1);
                     if (Scene1.getValues().bool) {
-                        dragger.removeAllChildren();
-                        dragger.name = null;
-                        Scene1.getSvg()[i].children[1].gotoAndStop("done");
+                        drag.removeAllChildren();
+                        drag.name = null;
+                        bitmap.children[1].gotoAndStop('done');
                     } else {
-                        name.gotoAndStop("done");
-                        dragger.y = bitmap.y - 35;
-                        dragger.x = bitmap.x - 50;
+                        name.gotoAndStop('done');
+                        drag.y = bitmap.y - 35;
+                        drag.x = bitmap.x - 50;
                     }
                 }
             }
@@ -147,30 +130,33 @@ var Scene1 = {};
         queue: {}
     };
     Scene1 = (function () {
-        var win, svg;
+        var win, array;
         win = 0;
-        svg = [];
+        array = [];
         return {
             getName: function () {
-                return "scene1";
+                return 'scene1';
             },
-            step: function (level) {
-                var img, position, randomNames, randomPosition, i;
-                img = level.img;//level.img is equal to an array of strings, urls of svg files
-                position = level.position; //level.position is equal to an array of objects like {x:0.5 , y:0.4}
+            step: function (dataLevel) {
+                var img, position, randomWords, randomPosition;
+                img = dataLevel.img;//level.img is equal to an array of strings, urls of svg files
+                position = dataLevel.position; //level.position is equal to an array of objects like {x:0.5 , y:0.4}
 
-                randomNames = random(img);
-                randomPosition = random(img);
+                cwidth = 230 * canvas.width * 0.0008;
+                cheight = 67 * canvas.height * 0.0008;
 
-                for (i = 0; i < img.length; i += 1) {
-                    image({i: randomNames[i], q: obj.queue, p: position[randomPosition[i]]});
+                randomWords = random(img.length);
+                randomPosition = random(img.length);
+
+                for (var i = 0, l = img.length; i < l; i += 1) {
+                    image({i: randomWords[i], q: obj.queue, pos: position[randomPosition[i]]});
                 }
-                for (i = 0; i < img.length; i += 1) {
-                    draggable(randomNames[i]);
+                for (var i = 0, l = img.length; i < l; i += 1) {
+                    draggable(randomWords[i]);
                 }
                 stage.update();
 
-                window.onresize = resize(img.length);
+                window.onresize = resize(l);
             },
             getQueue: function () {
                 return obj.queue;
@@ -184,8 +170,8 @@ var Scene1 = {};
             getWin: function () {
                 return win;
             },
-            getSvg: function () {
-                return svg;//return a vector
+            getArray: function () {
+                return array;//return a vector
             },
             getProgress: function () {
                 return obj.progress;
@@ -197,34 +183,35 @@ var Scene1 = {};
     var resize = function (length) {
 
         return function () {
-            var i;
+            var drag, imgC, backg, ch1, ch2;
             setAspectRatio();
-            for (i = 0; i < length; i += 1) {
-                var dragger, imgC, backg, ch1, ch2;
-                cwidth = 230 * canvas.width * 0.0008;
-                cheight = 67 * canvas.height * 0.0008;
+            backg = stage.getChildByName('backg');
+            backg.scaleX = canvas.width / backg.image.width;
+            backg.scaleY = canvas.height / backg.image.height;
 
-                dragger = stage.getChildByName("dragger" + i);
-                if (dragger) {
-                    ch1 = dragger.children[0];
-                    ch2 = dragger.children[1];
+            cwidth = 230 * canvas.width * 0.0008;
+            cheight = 67 * canvas.height * 0.0008;
+
+            for (var i = 0; i < length; i += 1) {
+                drag = stage.getChildByName('drag' + i);
+                if (drag) {
+                    ch1 = drag.children[0];
+                    ch2 = drag.children[1];
 
                     ch1.scaleX = ch1.scaleY = canvas.width * 0.0008;
                     ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
                 }
-                imgC = stage.getChildByName("imageContainer" + i);
+                imgC = stage.getChildByName('imageContainer' + i);
+
                 if (imgC) {
                     ch1 = imgC.children[0];
                     ch2 = imgC.children[1];
 
                     ch1.scaleX = ch1.scaleY = canvas.width * 0.0005;
                     ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
-                    imgC.x = canvas.width * imgC.obj.p.x;
-                    imgC.y = canvas.height * imgC.obj.p.y;
+                    imgC.x = canvas.width * imgC.obj.pos.x;
+                    imgC.y = canvas.height * imgC.obj.pos.y;
                 }
-                backg = stage.getChildByName("backg");
-                backg.scaleX = canvas.width / backg.image.width;
-                backg.scaleY = canvas.height / backg.image.height;
             }
             stage.update();
         };

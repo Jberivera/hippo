@@ -1,0 +1,34 @@
+[
+    {
+        "backg": "assets/scene2/1/backg/grandia.svg",
+        "img":[
+
+        ],
+        "sounds": [
+            "",
+            "",
+            "",
+            ""
+        ],
+        "phraseWords":{
+            "es":[1, 2, 2, 3],
+            "en":[2, 2, 1, 3]
+        }
+    },
+    {
+        "backg": "assets/scene2/1/backg/grandia.svg",
+        "img":[
+
+        ],
+        "sounds": [
+            "",
+            "",
+            "",
+            ""
+        ],
+        "lan":{
+            "es":{"length":4},
+            "en":{"length":4}
+        }
+    }
+]

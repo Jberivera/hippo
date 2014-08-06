@@ -1,15 +1,14 @@
 var stage;
-
-var canvas = document.getElementById("gameCanvas");
+var canvas = document.getElementById('gameCanvas');
 //getting ui canvas component
-var ui = document.getElementById("uiCanvas");
+var ui = document.getElementById('uiCanvas');
 
 var Queue = {};
 
 //Vector that contains all scenes for easy reference them on Scene() function
 var Scenes = [null, Scene1, Scene2];
 
-var language = "es";//Global Language
+var language = 'es';//Global Language
 
 var setAspectRatio = (function () {
 
@@ -21,15 +20,14 @@ var setAspectRatio = (function () {
 
         if(canvas.height < window.innerHeight){
             var diferencia = window.innerHeight - canvas.height;
-            canvas.style.marginTop = ui.style.marginTop = diferencia/2 + "px";
-            console.log(diferencia);
+            canvas.style.marginTop = ui.style.marginTop = diferencia/2 + 'px';
         }else{
-            canvas.style.marginTop = ui.style.marginTop = "0px";
+            canvas.style.marginTop = ui.style.marginTop = '0px';
         }
 
-    console.log("canvas.width:" + canvas.width);
-    console.log("canvas.height:" + canvas.height);
-    console.log("---");
+//    console.log('canvas.width:' + canvas.width);
+//    console.log('canvas.height:' + canvas.height);
+//    console.log('---');
     };
 }());
 
@@ -44,12 +42,12 @@ var init = function () {
     setAspectRatio();
 
     Queue = new createjs.LoadQueue();
-    Queue.addEventListener("complete", selectionPanel);
+    Queue.addEventListener('complete', selectionPanel);
     Queue.Manifest = [
-        {id: "setting", src: "assets/init/setting-icon48.png"},
-        {id: "scene1", src: "assets/init/scene1.png"},
-        {id: "scene2", src: "assets/init/scene1.png"},
-        {id: "scene3", src: "assets/init/scene1.png"}
+        {id: 'setting', src: 'assets/init/setting-icon48.png'},
+        {id: 'scene1', src: 'assets/init/scene1.png'},
+        {id: 'scene2', src: 'assets/init/scene1.png'},
+        {id: 'scene3', src: 'assets/init/scene1.png'}
     ];
     Queue.loadManifest(Queue.Manifest);
 };
@@ -58,62 +56,57 @@ var init = function () {
 var selectionPanel = function () {
     //----Drawing----
     //background
-    var rect = new createjs.Shape();
-    rect.graphics.beginFill("#E8D24A").drawRect(0, 0, canvas.width, canvas.height);
+    var rect, container;
+
+    rect = new createjs.Shape();
+    rect.graphics.beginFill('#E8D24A').drawRect(0, 0, canvas.width, canvas.height);
+    rect.name = "backg";
     stage.addChild(rect);
 
+    container = new createjs.Container();
+    container.name = "container";
+    container.y = canvas.height * 0.35;
+    container.x = canvas.width * -0.02;
+    container.scaleX = container.scaleY = canvas.width * 0.00105;
     //scenes images
-    for (var i = 1; i < Queue.Manifest.length; i++) {
-        sceneImage(i);
+    for (var i = 1, l = Queue.Manifest.length; i < l; i++) {
+        sceneImage(i, container);
     }
 
     //setting button
     settingButton();
 
     window.onresize = function () {
+        var c, backg, setting;
+        ui.style.zIndex = '-1';
         setAspectRatio();
 
-        stage.removeAllChildren();
-        selectionPanel();
+        backg = stage.getChildByName('backg');
+        backg.scaleX = canvas.width / backg.graphics._activeInstructions[0].params[2];
+        backg.scaleY = canvas.height / backg.graphics._activeInstructions[0].params[3];
 
+        c = stage.getChildByName('container');
+        c.y = canvas.height * 0.35;
+        c.x = canvas.width * -0.02;
+        c.scaleX = c.scaleY = canvas.width * 0.00105;
+
+        setting = stage.getChildByName('setting');
+        setting.x = canvas.width - canvas.width * 0.10;
+        setting.y = 25;
+        stage.update();
     };
 
     stage.update();
 };
 
-var layout = {
-    max: null,
-    i: null,
-    y: canvas.height * 0.2 + 40
-};
+var sceneImage = function (i, container) {
+    var scene, x;
+    scene = new createjs.Bitmap(Queue.getResult('scene' + i));
 
-var sceneImage = function (i) {
-    var scene = new createjs.Bitmap(Queue.getResult("scene" + i));
+    x = scene.image.width * (i - 1) + 100 * i;
+    scene.x = x;
 
-    //setting layout scene
-    var x = scene.image.width * (i - 1) + 100 * i;
-    var y = canvas.height * 0.2;
-    if (x + scene.image.width < canvas.width) {
-        scene.x = x;
-        scene.y = y;
-    } else {
-        if (!layout.max) {
-            layout.max = i - 1;
-            layout.i = i - 1;
-        } else if (i - layout.i === layout.max + 1) {
-            layout.i = i - 1;
-            layout.y += 150;
-        }
-        var ii = i - layout.i;
-        x = scene.image.width * (ii - 1) + 100 * ii;
-        y = scene.image.height + layout.y;
-        scene.x = x;
-        scene.y = y;
-    }
-    //end layout logic
-
-    stage.addChild(scene);
-    scene.on("click", function () {
+    scene.on('click', function () {
         stage.removeChild(scene);
         if (Scenes[i]) {
             stage.removeAllChildren();
@@ -121,15 +114,18 @@ var sceneImage = function (i) {
         }
         stage.update();
     });
+    container.addChild(scene);
+    stage.addChild(container);
     stage.update();
 };
 
 var settingButton = function () {
-    var setting = new createjs.Bitmap(Queue.getResult("setting"));
+    var setting = new createjs.Bitmap(Queue.getResult('setting'));
     setting.x = canvas.width - canvas.width * 0.10;
     setting.y = 25;
+    setting.name = "setting";
     stage.addChild(setting);
-    setting.on("click", function () {
+    setting.on('click', function () {
         ui.style.zIndex = '1';
         settingPanel();
     });
@@ -138,24 +134,25 @@ var settingButton = function () {
 //this functions draws a setting panel
 
 var settingPanel = function () {
-    var lanOptions = ["es", "en" , "es"];
-    var rect = new createjs.Shape();
-    rect.graphics.beginFill("#5A3EA1").drawRect(0, 0, canvas.width - 200, canvas.height - 200);
-    var ok = new createjs.Shape();
-    var okwidth = rect.graphics._activeInstructions[0].params[2] * 0.35;
-    var okheight = rect.graphics._activeInstructions[0].params[3];
-    ok.graphics.beginFill("#57998C").drawRect(okwidth, okheight - 70, 370, 70);
+    var lanOptions, rect, ok, okwidth, okheight, settings;
+    lanOptions = ['es', 'en' , 'es'];
+    rect = new createjs.Shape();
+    rect.graphics.beginFill('#5A3EA1').drawRect(0, 0, canvas.width - 200, canvas.height - 200);
+    ok = new createjs.Shape();
+    okwidth = rect.graphics._activeInstructions[0].params[2] * 0.35;
+    okheight = rect.graphics._activeInstructions[0].params[3];
+    ok.graphics.beginFill('#57998C').drawRect(okwidth, okheight - 70, 370, 70);
 
-    var settings = new createjs.Container();
+    settings = new createjs.Container();
     settings.x = 100;
     settings.y = 100;
     settings.addChild(rect, ok);
     stageUi.addChild(settings);
-    for (var i = 0; i < lanOptions.length; i++) {
+    for (var i = 0, l = lanOptions.length; i < l; i++) {
         settings.addChild(lanOption(lanOptions[i], i));
     }
 
-    ok.on("click", function () {
+    ok.on('click', function () {
         ui.style.zIndex = '-1';
         stageUi.removeAllChildren();
         stageUi.update();
@@ -166,19 +163,19 @@ var settingPanel = function () {
 var lanOption = function (lan, i) {
     var c = new createjs.Container();//Container
     var opt = new createjs.Shape();
-    opt.graphics.beginFill("#000").drawRect(100 * (i + 1) + 150 * i, 100, 150, 150);
-    var label = new createjs.Text(lan, "bold 25px Arial", "#FFFFFF");
-    label.textAlign = "center";
+    opt.graphics.beginFill('#000').drawRect(100 * (i + 1) + 150 * i, 100, 150, 150);
+    var label = new createjs.Text(lan, 'bold 25px Arial', '#FFFFFF');
+    label.textAlign = 'center';
     label.x = 175 * (i + 1) + 75 * i;
     label.y = 160;
     c.addChild(opt, label);
-    c.on("click", function () {
+    c.on('click', function () {
         language = lan;
         var parent = c.parent.children;
-        for (var j = 2; j < parent.length; j++) {
-            parent[j].children[0].graphics._fillInstructions[0].params[1] = "#000";
+        for (var j = 2, l = parent.length; j < l; j++) {
+            parent[j].children[0].graphics._fillInstructions[0].params[1] = '#000';
         }
-        opt.graphics._fillInstructions[0].params[1] = "#AD4A3A";
+        opt.graphics._fillInstructions[0].params[1] = '#AD4A3A';
         stageUi.update();
     });
     return c;
