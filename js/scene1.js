@@ -12,25 +12,28 @@ var Scene1 = {};
         svg = new createjs.Bitmap(obj.q.getResult('img' + obj.i));
         svg.scaleX = svg.scaleY = canvas.width * 0.0005;
 
+        j = obj.i * 3;
+        sheet = new createjs.SpriteSheet({
+            'animations': {
+                'gray': [j],
+                'drag': [j + 1],
+                'done': [j + 2],
+                'blank': [28]
+            },
+            'images': [Scene1.getValues().words],
+            'frames': {
+                'regX': 90,
+                'regY': 85,
+                'height': 130,
+                'width': 340,
+                'count': 27
+            }
+        });
         if (Scene1.getValues().bool) {
-            j = obj.i * 3;
-            sheet = new createjs.SpriteSheet({
-                'animations': {
-                    'gray': [j],
-                    'drag': [j + 1],
-                    'done': [j + 2]
-                },
-                'images': [Scene1.getValues().words],
-                'frames': {
-                    'regX': 90,
-                    'regY': 85,
-                    'height': 130,
-                    'width': 340,
-                    'count': 27
-                }
-            });
-
             name = new createjs.Sprite(sheet, 'gray');
+            name.scaleX = name.scaleY = canvas.width * 0.00065;
+        } else {
+            name = new createjs.Sprite(sheet, 'blank');
             name.scaleX = name.scaleY = canvas.width * 0.00065;
         }
 
@@ -94,15 +97,9 @@ var Scene1 = {};
                 if ((evt.currentTarget.y + 80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
                     drag.removeAllEventListeners();
                     Scene1.setWin(1);
-                    if (Scene1.getValues().bool) {
-                        drag.removeAllChildren();
-                        drag.name = null;
-                        bitmap.children[1].gotoAndStop('done');
-                    } else {
-                        name.gotoAndStop('done');
-                        drag.y = bitmap.y - 35;
-                        drag.x = bitmap.x - 50;
-                    }
+                    drag.removeAllChildren();
+                    drag.name = null;
+                    bitmap.children[1].gotoAndStop('done');
                 }
             }
             if (Scene1.getWin() === Scene1.getConfig()[Scene1.getValues().level].img.length) {
@@ -110,14 +107,13 @@ var Scene1 = {};
                     window.setTimeout(function () {
                         currentlevel = Scene1.getValues().level + 1;
                         Scene1.initialize({lan: language, level: currentlevel, bool: false});
-                    }, 500);
+                    }, 400);
                 } else {
                     window.setTimeout(function () {
                         Scene1.initialize({lan: language, level: 2, bool: true});
-                    }, 500);
+                    }, 400);
                 }
                 Scene1.setWin(0);
-//            init();
             }
             stage.update();
         });

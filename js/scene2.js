@@ -232,8 +232,9 @@ var Scene2 = {};
             for (var i = 0; i < length; i += 1) {
                 dash = container.getChildByName('dash' + i);
                 if (dash) {
-                    //ch2 = dash.children[1];
-                    //ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
+//                    ch1 = dash.children[0];
+//                    ch2 = dash.children[1];
+//                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
 
                     dash.scaleX = dash.scaleY = canvas.width * 0.0008;
                     dash.x = dash.scaleX * dash.obj.x;
