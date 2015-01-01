@@ -1,12 +1,14 @@
-var stage;
+var stage, stageUi, stageBack;
 var canvas = document.getElementById('gameCanvas');
 //getting ui canvas component
 var ui = document.getElementById('uiCanvas');
 
+var backCanvas = document.getElementById('backCanvas');
+
 var Queue = {};
 
 //Vector that contains all scenes for easy reference them on Scene() function
-var Scenes = [null, Scene1, Scene2];
+var Scenes = [null, Scene1, Scene2, Scene3];
 
 var language = 'es';//Global Language
 
@@ -15,14 +17,14 @@ var setAspectRatio = (function () {
     var ratio = 1920 / 1080;
 
     return function () {
-        ui.width = canvas.width = window.innerWidth;
-        ui.height = canvas.height = window.innerWidth / ratio;
+        ui.width = canvas.width = backCanvas.width = window.innerWidth;
+        ui.height = canvas.height = backCanvas.height =  window.innerWidth / ratio;
 
         if(canvas.height < window.innerHeight){
             var diferencia = window.innerHeight - canvas.height;
-            canvas.style.marginTop = ui.style.marginTop = diferencia/2 + 'px';
+            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = diferencia/2 + 'px';
         }else{
-            canvas.style.marginTop = ui.style.marginTop = '0px';
+            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = '0px';
         }
 
 //    console.log('canvas.width:' + canvas.width);
@@ -34,8 +36,9 @@ var setAspectRatio = (function () {
 var init = function () {
 
     stage = new createjs.Stage(canvas);
+    stage.autoClear = true;
     stageUi = new createjs.Stage(ui);
-
+    stageBack = new createjs.Stage(backCanvas);
     createjs.Touch.enable(stage);
     createjs.Touch.enable(stageUi);
 
