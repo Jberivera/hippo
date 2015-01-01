@@ -2,8 +2,8 @@
     {
         "backg": "assets/scene1/1/backg/landscape.svg",
         "img": [
-            "assets/scene1/1/img/reindeer.svg",
             "assets/scene1/1/img/seal.svg",
+            "assets/scene1/1/img/reindeer.svg",
             "assets/scene1/1/img/koala.svg",
             "assets/scene1/1/img/rabbit.svg",
             "assets/scene1/1/img/fox.svg",
