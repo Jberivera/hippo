@@ -15,6 +15,7 @@
 <body onload="init()">
   <!-- a common parent div to let the game canvas live with other elements inside the UI 1366 768-->
   <div id="gameFrame">
+    <canvas id="backCanvas" width="1920" height="1080" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
     <!-- our game canvas -->
     <canvas id="gameCanvas" width="1920" height="1080" style="position: absolute; left: 0; top: 0; z-index: 0;">
     
@@ -28,6 +29,7 @@
   <script src="js/setup.js"></script>
   <script src="js/scene1.js"></script>
   <script src="js/scene2.js"></script>
+  <script src="js/scene3.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
