@@ -1,0 +1,31 @@
+[
+    {
+        "backg": "assets/scene3/1/backg/landscape.svg",
+        "img":[
+
+        ],
+        "audio": [
+            "",
+            "",
+            "",
+            ""
+        ],
+        "word":"via"
+    },
+    {
+        "backg": "assets/scene2/1/backg/grandia.svg",
+        "img":[
+
+        ],
+        "audio": [
+            "",
+            "",
+            "",
+            ""
+        ],
+        "lan":{
+            "es":{"length":4},
+            "en":{"length":4}
+        }
+    }
+]
