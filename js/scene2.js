@@ -66,7 +66,7 @@ var Scene2 = {};
         });
 
         sprite = new createjs.Sprite(sheet, 'blank');
-        sprite.scaleX = sprite.scaleY = canvas.width * 0.00065;
+        sprite.scaleX = sprite.scaleY = canvas.width * 0.00125;
 
         i = obj.i;
         obj.x = before;
@@ -133,7 +133,6 @@ var Scene2 = {};
                     drag.removeAllChildren();
 
                     Scene1.setWin(1);
-
                     dash.children[1].gotoAndStop('done');
 
                     stage.update();
@@ -219,12 +218,12 @@ var Scene2 = {};
         return function () {
             var backg, dash, drag, container, ch1, ch2;
             setAspectRatio();
-            backg = stage.getChildByName('backg');
+            backg = stageBack.getChildByName('backg');
             backg.scaleX = canvas.width / backg.image.width;
             backg.scaleY = canvas.height / backg.image.height;
             container = Scene2.getContainer();
-            container.y = canvas.height * 0.6;
-            container.x = canvas.width * 0.05;
+            //container.y = canvas.height * 0.6;
+            //container.x = canvas.width * 0.05;
 
             cwidth = 230 * canvas.width * 0.0008;
             cheight = 67 * canvas.height * 0.0008;
@@ -232,9 +231,9 @@ var Scene2 = {};
             for (var i = 0; i < length; i += 1) {
                 dash = container.getChildByName('dash' + i);
                 if (dash) {
-//                    ch1 = dash.children[0];
-//                    ch2 = dash.children[1];
-//                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
+                    ch1 = dash.children[0];
+                    ch2 = dash.children[1];
+                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00125;
 
                     dash.scaleX = dash.scaleY = canvas.width * 0.0008;
                     dash.x = dash.scaleX * dash.obj.x;
@@ -242,14 +241,14 @@ var Scene2 = {};
                 drag = stage.getChildByName('drag' + i);
                 if (drag) {
                     ch1 = drag.children[0];
-                    ch1.scaleX = ch1.scaleY = canvas.width * 0.00065;
+                    //ch1.scaleX = ch1.scaleY = canvas.width * 0.00065;
 
-                    drag.x = canvas.width * drag.obj.pos.x;
-                    drag.y = canvas.height * drag.obj.pos.y;
+                    //drag.x = canvas.width * drag.obj.pos.x;
+                    //drag.y = canvas.height * drag.obj.pos.y;
                 }
             }
             stage.update();
-        }
-
+            stageBack.update();
+        };
     };
 }());

@@ -181,7 +181,7 @@ var Scene1 = {};
         return function () {
             var drag, imgC, backg, ch1, ch2;
             setAspectRatio();
-            backg = stage.getChildByName('backg');
+            backg = stageBack.getChildByName('backg');
             backg.scaleX = canvas.width / backg.image.width;
             backg.scaleY = canvas.height / backg.image.height;
 
@@ -210,6 +210,7 @@ var Scene1 = {};
                 }
             }
             stage.update();
+            stageBack.update();
         };
     };
 }());

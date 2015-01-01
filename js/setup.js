@@ -4,11 +4,13 @@ var loadComplete = function (scene) {
         var dataLevel, queue, backg;
         dataLevel = scene.getConfig()[scene.getValues().level];//
         queue = scene.getQueue();
+
         backg = new createjs.Bitmap(queue.getResult('backg'));
         backg.name = 'backg';
         backg.scaleX = canvas.width / backg.image.width;
         backg.scaleY = canvas.height / backg.image.height;
-        stage.addChild(backg);
+        stageBack.addChild(backg);
+        stageBack.update();
         scene.step(dataLevel);
     };
 };
