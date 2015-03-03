@@ -1,7 +1,7 @@
 var Scene2 = {};
 (function () {
     'use strict';
-    var cwidth, cheight;
+    var cwidth, cheight, before = 0;
     var position = [
         {
             'x': 0.35,
@@ -40,9 +40,10 @@ var Scene2 = {};
             'y': 0.15
         }
     ];
-    var before = 0;
 
     var emdash = function (obj) {
+        //obj has {i: iteration of the for loop, size: value from scene2-config.json "en":[2, 2, 1, 3], l: length of that vector}
+
         var width, array, i, j, dash, sheet, sprite;
 //        height = canvas.width * 0.03;
         width = 80 * obj.size;
@@ -66,7 +67,7 @@ var Scene2 = {};
         });
 
         sprite = new createjs.Sprite(sheet, 'blank');
-        sprite.scaleX = sprite.scaleY = canvas.width * 0.00125;
+        sprite.scaleX = sprite.scaleY = canvas.width * 0.00085;
 
         i = obj.i;
         obj.x = before;
@@ -84,9 +85,10 @@ var Scene2 = {};
         Scene2.getContainer().addChild(array[i]);
     };
     var draggable = function (obj) {
+        //obj has {i: iteration of the for loop, pos: a random position defined above from position vector, l: length of that vector}
+
         var j, sheet, drag, sprite;
         j = obj.i * 2;
-
         sheet = new createjs.SpriteSheet({
             'animations': {
                 'drag': [j],
@@ -111,6 +113,7 @@ var Scene2 = {};
         drag.name = 'drag' + obj.i;
         drag.addChild(sprite);
 
+        //Scene2.getContainer().addChild(drag);
         stage.addChild(drag);
 
         drag.on('pressmove', function (evt) {
@@ -124,6 +127,7 @@ var Scene2 = {};
             var dash, currentlevel, container;
             container = Scene2.getContainer();
             dash = Scene2.getArray()[obj.i];
+
             //Los if crean un cuadrado logico alrededor de cada imagen donde se puede soltar el Drag
             if ((evt.currentTarget.x > (dash.x) && (evt.currentTarget.x < (dash.x + 150)))) {
                 if ((evt.currentTarget.y + 80 > (container.y) && (evt.currentTarget.y < (container.y + 80)))) {
@@ -165,9 +169,12 @@ var Scene2 = {};
                 return 'scene2';
             },
             step: function (dataLevel) {
-                var lan, phw, randomPosition, randomWords;
+                var lan, phw, randomPosition;
                 lan = Scene2.getValues().lan;
+
+                //phw PhraseWords
                 phw = dataLevel.phraseWords;
+
                 container = new createjs.Container();
                 container.y = canvas.height * 0.6;
                 container.x = canvas.width * 0.05;
@@ -177,6 +184,8 @@ var Scene2 = {};
                 cheight = 67 * canvas.height * 0.0008;
 
                 randomPosition = random(9);
+
+                //"before" is to setting a white space between dashes
                 before = canvas.width / phw[lan].length;
 
                 for (var i = 0, l = phw[lan].length; i < l; i += 1) {
@@ -222,8 +231,8 @@ var Scene2 = {};
             backg.scaleX = canvas.width / backg.image.width;
             backg.scaleY = canvas.height / backg.image.height;
             container = Scene2.getContainer();
-            //container.y = canvas.height * 0.6;
-            //container.x = canvas.width * 0.05;
+            container.y = canvas.height * 0.6;
+            container.x = canvas.width * 0.05;
 
             cwidth = 230 * canvas.width * 0.0008;
             cheight = 67 * canvas.height * 0.0008;
@@ -233,7 +242,7 @@ var Scene2 = {};
                 if (dash) {
                     ch1 = dash.children[0];
                     ch2 = dash.children[1];
-                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00125;
+                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00085;
 
                     dash.scaleX = dash.scaleY = canvas.width * 0.0008;
                     dash.x = dash.scaleX * dash.obj.x;
@@ -241,10 +250,10 @@ var Scene2 = {};
                 drag = stage.getChildByName('drag' + i);
                 if (drag) {
                     ch1 = drag.children[0];
-                    //ch1.scaleX = ch1.scaleY = canvas.width * 0.00065;
+                    ch1.scaleX = ch1.scaleY = canvas.width * 0.00065;
 
-                    //drag.x = canvas.width * drag.obj.pos.x;
-                    //drag.y = canvas.height * drag.obj.pos.y;
+                    drag.x = canvas.width * drag.obj.pos.x;
+                    drag.y = canvas.height * drag.obj.pos.y;
                 }
             }
             stage.update();

@@ -2,15 +2,15 @@
     {
         "backg": "assets/scene1/1/backg/landscape.svg",
         "img": [
-            "assets/scene1/1/img/seal.svg",
-            "assets/scene1/1/img/reindeer.svg",
-            "assets/scene1/1/img/koala.svg",
-            "assets/scene1/1/img/rabbit.svg",
-            "assets/scene1/1/img/fox.svg",
-            "assets/scene1/1/img/elephant.svg",
-            "assets/scene1/1/img/hippo.svg",
-            "assets/scene1/1/img/boar.svg",
-            "assets/scene1/1/img/dog.svg"
+          {"src": "assets/scene1/1/img/reindeer.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/seal.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/koala.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/rabbit.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/fox.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/elephant.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/hippo.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/boar.svg", "scale": 0.0005},
+          {"src": "assets/scene1/1/img/dog.svg", "scale": 0.0005}
         ],
         "position":[
             {
@@ -52,14 +52,137 @@
         ]
     },
     {
-        "backg": "assets/scene1/2/backg/hippo.svg",
+        "backg": "assets/scene1/2/backg/landscape.svg",
         "img":[
-            "assets/scene1/2/img/men-at-work.png"
+            {
+              "src":"assets/scene1/2/img/Abuela.png",
+              "scale": 0.00035,
+              "sheet":{
+                "animations": {
+                  "idle": [0, 4, "idle", 0.5],
+                  "done": [5, 9, "idle", 0.5]
+                },
+                "frames": {
+                  "regX": 90,
+                  "regY": 85,
+                  "height": 709,
+                  "width": 569,
+                  "count": 10
+                }
+              }
+            },
+            {
+              "src":"assets/scene1/2/img/Agua.png",
+              "scale": 0.00025,
+              "sheet":{
+                "animations": {
+                  "idle": {"frames":[0,1,2,3,4,5,6,5,4,3,2,1,0], "speed":0.5},
+                  "done": [7, 13, "stop",  0.5],
+                  "stop": [13]
+                },
+                "frames": {
+                  "regX": 90,
+                  "regY": 85,
+                  "height": 709,
+                  "width": 569,
+                  "count": 14
+                }
+              }
+            },
+            {
+              "src":"assets/scene1/2/img/Aguila.png",
+              "scale": 0.00035,
+              "sheet":{
+                "animations": {
+                  "idle": [0, 4, "idle", 0.2],
+                  "done": [5, 9, "done", 0.5]
+                },
+                "frames": {
+                  "regX": 90,
+                  "regY": 85,
+                  "height": 709,
+                  "width": 569,
+                  "count": 10
+                }
+              }
+            },
+            {
+              "src":"assets/scene1/2/img/Angel.png",
+              "scale": 0.0003,
+              "sheet":{
+                "animations": {
+                  "idle": [0, 4, "idle", 0.5],
+                  "done": [5, 9, "done", 0.5]
+                },
+                "frames": {
+                  "regX": 90,
+                  "regY": 85,
+                  "height": 709,
+                  "width": 569,
+                  "count": 10
+                }
+              }
+            },
+            {
+              "src":"assets/scene1/2/img/Arbol.png",
+              "scale": 0.0003,
+              "sheet":{
+                "animations": {
+                  "idle": [0, 4, "idle", 0.5],
+                  "done": [5, 9, "stop", 0.5],
+                  "stop": [9]
+                },
+                "frames": {
+                  "regX": 90,
+                  "regY": 85,
+                  "height": 709,
+                  "width": 569,
+                  "count": 10
+                }
+              }
+            },
+            {
+              "src":"assets/scene1/2/img/Ardilla.png",
+              "scale":0.0003,
+              "sheet":{
+                "animations": {
+                  "idle": [0, 4, "idle", 0.5],
+                  "done": [5, 9, "done", 0.5]
+                },
+                "frames": {
+                  "regX": 90,
+                  "regY": 85,
+                  "height": 709,
+                  "width": 569,
+                  "count": 10
+                }
+              }
+            }
         ],
         "position":[
             {
-                "x": 0,
-                "y": 1.5
+                "x": 0.05,
+                "y": 0.45
+            },
+            {
+                "x": 0.1,
+                "y": 0.7
+            },
+            {
+                "x": 0.3,
+                "y": 0.65
+            },
+            {
+                "x": 0.4,
+                "y": 0.4
+            },
+            {
+                "x": 0.52,
+                "y": 0.55
+            },
+            {
+                "x": 0.7,
+                "y": 0.5
             }
         ]
     }

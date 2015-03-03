@@ -18,12 +18,12 @@ var setAspectRatio = (function () {
 
     return function () {
         ui.width = canvas.width = backCanvas.width = window.innerWidth;
-        ui.height = canvas.height = backCanvas.height =  window.innerWidth / ratio;
+        ui.height = canvas.height = backCanvas.height = window.innerWidth / ratio;
 
-        if(canvas.height < window.innerHeight){
+        if (canvas.height < window.innerHeight) {
             var diferencia = window.innerHeight - canvas.height;
-            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = diferencia/2 + 'px';
-        }else{
+            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = diferencia / 2 + 'px';
+        } else {
             canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = '0px';
         }
 
@@ -85,8 +85,8 @@ var selectionPanel = function () {
         setAspectRatio();
 
         backg = stage.getChildByName('backg');
-        backg.scaleX = canvas.width / backg.graphics._activeInstructions[0].params[2];
-        backg.scaleY = canvas.height / backg.graphics._activeInstructions[0].params[3];
+        backg.scaleX = canvas.width / backg.graphics._activeInstructions[0].w;
+        backg.scaleY = canvas.height / backg.graphics._activeInstructions[0].h;
 
         c = stage.getChildByName('container');
         c.y = canvas.height * 0.35;
@@ -113,7 +113,7 @@ var sceneImage = function (i, container) {
         stage.removeChild(scene);
         if (Scenes[i]) {
             stage.removeAllChildren();
-            Scenes[i].initialize({lan: language, level: 1, bool: true});
+            Scenes[i].initialize({lan: language, level: 2, bool: true});
         }
         stage.update();
     });
@@ -138,7 +138,7 @@ var settingButton = function () {
 
 var settingPanel = function () {
     var lanOptions, rect, ok, okwidth, okheight, settings;
-    lanOptions = ['es', 'en' , 'es'];
+    lanOptions = ['es', 'en', 'es'];
     rect = new createjs.Shape();
     rect.graphics.beginFill('#5A3EA1').drawRect(0, 0, canvas.width - 200, canvas.height - 200);
     ok = new createjs.Shape();
@@ -176,9 +176,9 @@ var lanOption = function (lan, i) {
         language = lan;
         var parent = c.parent.children;
         for (var j = 2, l = parent.length; j < l; j++) {
-            parent[j].children[0].graphics._fillInstructions[0].params[1] = '#000';
+            parent[j].children[0].graphics._fill.style = '#000';
         }
-        opt.graphics._fillInstructions[0].params[1] = '#AD4A3A';
+        opt.graphics._fill.style = '#AD4A3A';
         stageUi.update();
     });
     return c;

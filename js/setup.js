@@ -25,7 +25,7 @@ var queueProgress = function (scene) {
     }
 };
 
-var setUp = function(obj, scene) {
+var setUp = function (obj, scene) {
 
     var loader;
 
@@ -60,15 +60,19 @@ var setUp = function(obj, scene) {
             Manifest.push({id: 'backg', src: dataLevel.backg, type: createjs.LoadQueue.IMAGE});
 
             for (var i = 0, l = dataLevel.img.length; i < l; i += 1) {
-                Manifest.push({id: 'img' + i, src: dataLevel.img[i], type: createjs.LoadQueue.IMAGE});
+                Manifest.push({id: 'img' + i, src: dataLevel.img[i].src, type: createjs.LoadQueue.IMAGE});
             }
 
             obj.queue.loadManifest(Manifest);
         });
 
         loader.loadManifest([
-            {id: 'words', src: 'assets/'+scene.getName()+'/' + values.level + '/img/lan/words_' + values.lan + '.png', type: createjs.LoadQueue.IMAGE},
-            {id: 'config', src: 'config/'+scene.getName()+'-config.json', type: createjs.LoadQueue.JSON}
+            {
+                id: 'words',
+                src: 'assets/' + scene.getName() + '/' + values.level + '/img/lan/words_' + values.lan + '.png',
+                type: createjs.LoadQueue.IMAGE
+            },
+            {id: 'config', src: 'config/' + scene.getName() + '-config.json', type: createjs.LoadQueue.JSON}
         ]);
         values.level -= 1;
     };

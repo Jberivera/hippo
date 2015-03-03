@@ -2,18 +2,55 @@ var Scene1 = {};
 
 (function () {
     'use strict';
-    var cwidth, cheight;
+    var cwidth, cheight, matchWin, currentlevel;
+
+    var tick = function(e) {
+        stage.update();
+    };
+
+    var setTicker = (function() {
+        var toggle = true;
+        return function() {
+            if (toggle) {
+                createjs.Ticker.addEventListener("tick", tick);
+                toggle = false;
+            }
+        };
+    }());
 
     var image = function (obj) {
         //obj = {i : number, q : queueObject, pos : {x:0.07 y:0.04}} p:position
-        var svg, j, sheet, name, array, i;
+        var img, j, sheetName, sheetImg, name, array, i, imgConfig, o;
         i = obj.i;
         array = Scene1.getArray();
-        svg = new createjs.Bitmap(obj.q.getResult('img' + obj.i));
-        svg.scaleX = svg.scaleY = canvas.width * 0.0005;
+        imgConfig = Scene1.getDataLevel().img[i];
 
-        j = obj.i * 3;
-        sheet = new createjs.SpriteSheet({
+        //if the image file is a Sprite or is normal image file
+        if (imgConfig.sheet) {
+            o = imgConfig.sheet;
+            o.images = [obj.q.getResult('img' + obj.i)];
+            sheetImg = new createjs.SpriteSheet(o);
+            img = new createjs.Sprite(sheetImg, 'idle');
+            img.scaleX = img.scaleY = canvas.width * imgConfig.scale;
+            setTicker();
+        }else {
+            img = new createjs.Bitmap(obj.q.getResult('img' + obj.i));
+            img.scaleX = img.scaleY = canvas.width * imgConfig.scale;
+        }
+
+        array[i] = new createjs.Container();
+        array[i].name = 'imageContainer' + i;
+        array[i].obj = obj;
+        array[i].x = canvas.width * obj.pos.x;
+        array[i].y = canvas.height * obj.pos.y;
+        array[i].addChild(img);
+    };
+
+    var imageName = function(i) {
+        var j, sheetName, name, array;
+        j = i * 3;
+        array = Scene1.getArray();
+        sheetName = new createjs.SpriteSheet({
             'animations': {
                 'gray': [j],
                 'drag': [j + 1],
@@ -30,20 +67,14 @@ var Scene1 = {};
             }
         });
         if (Scene1.getValues().bool) {
-            name = new createjs.Sprite(sheet, 'gray');
+            name = new createjs.Sprite(sheetName, 'gray');
             name.scaleX = name.scaleY = canvas.width * 0.00065;
         } else {
-            name = new createjs.Sprite(sheet, 'blank');
+            name = new createjs.Sprite(sheetName, 'blank');
             name.scaleX = name.scaleY = canvas.width * 0.00065;
         }
-
-        array[i] = new createjs.Container();
-        array[i].name = 'imageContainer' + i;
-        array[i].obj = obj;
-        array[i].x = canvas.width * obj.pos.x;
-        array[i].y = canvas.height * obj.pos.y;
-        array[i].addChild(svg, name);
-        stage.addChild(array[obj.i]);
+        array[i].addChild(name);
+        stage.addChild(array[i]);
     };
 
     var draggable = function (i) {
@@ -84,14 +115,15 @@ var Scene1 = {};
         drag.on('pressmove', function (evt) {
             // currentTarget will be the container that the event listener was added to:
 //        name.scaleX = name.scaleY = 1.35;
-            c.graphics._fillInstructions[0].params[1] = 'transparent';
+            c.graphics._fill.style = 'transparent';
             evt.currentTarget.x = evt.stageX - cwidth / 2;
             evt.currentTarget.y = evt.stageY - cheight;
             stage.update();
         });
         drag.on('pressup', function (evt) {
-            var bitmap, currentlevel;
+            var bitmap;
             bitmap = Scene1.getArray()[i];
+
             //Los if crean un cuadrado logico alrededor de cada imagen donde se puede soltar el Drag
             if ((evt.currentTarget.x + 115 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
                 if ((evt.currentTarget.y + 80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
@@ -100,18 +132,21 @@ var Scene1 = {};
                     drag.removeAllChildren();
                     drag.name = null;
                     bitmap.children[1].gotoAndStop('done');
+                    if(bitmap.children[0].spriteSheet){
+                        bitmap.children[0].gotoAndPlay('done');
+                    }
                 }
             }
-            if (Scene1.getWin() === Scene1.getConfig()[Scene1.getValues().level].img.length) {
+            if (Scene1.getWin() === matchWin) {
                 if (Scene1.getValues().bool) {
                     window.setTimeout(function () {
-                        currentlevel = Scene1.getValues().level + 1;
                         Scene1.initialize({lan: language, level: currentlevel, bool: false});
-                    }, 400);
+                    }, 1000);
                 } else {
                     window.setTimeout(function () {
-                        Scene1.initialize({lan: language, level: 2, bool: true});
-                    }, 400);
+                        currentlevel = currentlevel === Scene1.getConfig().length ? 1 : currentlevel + 1;
+                        Scene1.initialize({lan: language, level: currentlevel, bool: true});
+                    }, 1000);
                 }
                 Scene1.setWin(0);
             }
@@ -137,6 +172,12 @@ var Scene1 = {};
                 var img, position, randomWords, randomPosition;
                 img = dataLevel.img;//level.img is equal to an array of strings, urls of svg files
                 position = dataLevel.position; //level.position is equal to an array of objects like {x:0.5 , y:0.4}
+                matchWin = img.length;
+                currentlevel = Scene1.getValues().level + 1;
+
+                Scene1.getDataLevel = function () {
+                    return dataLevel;
+                };
 
                 cwidth = 230 * canvas.width * 0.0008;
                 cheight = 67 * canvas.height * 0.0008;
@@ -147,7 +188,10 @@ var Scene1 = {};
                 for (var i = 0, l = img.length; i < l; i += 1) {
                     image({i: randomWords[i], q: obj.queue, pos: position[randomPosition[i]]});
                 }
-                for (var i = 0, l = img.length; i < l; i += 1) {
+                for (i = 0; i < l; i += 1) {
+                    imageName(randomWords[i]);
+                }
+                for (i = 0; i < l; i += 1) {
                     draggable(randomWords[i]);
                 }
                 stage.update();
@@ -157,8 +201,8 @@ var Scene1 = {};
             getQueue: function () {
                 return obj.queue;
             },
-            getConfig: function () {
-                return obj.config;//return an array of objects [{},{},{}]
+            getConfig: function() {
+                return obj.config;
             },
             setWin: function (n) {
                 win = n === 0 ? 0 : win + n;

@@ -68,7 +68,7 @@ var Scene3 = {};
             container.on('pressmove', function(event){
                 if(ch1 && !draw){
                     wrong = false;
-                    ch1.graphics._fillInstructions[0].params[1] = '#E86223';
+                    ch1.graphics._fill.style = '#E86223';
                 }
                 draw = true;
                 stage.update();
@@ -78,7 +78,7 @@ var Scene3 = {};
                 for(var i = 0; i < obj.last; i+=1){
                     container = stage.getChildByName('container' + i);
                     ch1 = container.children[0];
-                    var str = ch1.graphics._fillInstructions[0].params[1];
+                    var str = ch1.graphics._fill.style;
                     if(str === '#501CE8'){
                         Scene3.setWin(1);
                     }
@@ -94,7 +94,7 @@ var Scene3 = {};
                     for(var i = 0; i < obj.last; i+=1){
                         container = stage.getChildByName('container' + i);
                         ch1 = container.children[0];
-                        ch1.graphics._fillInstructions[0].params[1] = '#16A82C';
+                        ch1.graphics._fill.style = '#16A82C';
                     }   
                     draw = false;
                 }
@@ -103,12 +103,12 @@ var Scene3 = {};
             });
         }else{
             container.addEventListener('mouseover', function(event) {
-                var str = c.graphics._fillInstructions[0].params[1];
+                var str = c.graphics._fill.style;
 
                 if(draw && str === '#E86223' && !wrong){
-                    c.graphics._fillInstructions[0].params[1] = '#501CE8';
+                    c.graphics._fill.style = '#501CE8';
                     if (ch1) {
-                        ch1.graphics._fillInstructions[0].params[1] = '#E86223';
+                        ch1.graphics._fill.style = '#E86223';
                     }
                 }else{
                     wrong = true;
