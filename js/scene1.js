@@ -2,25 +2,15 @@ var Scene1 = {};
 
 (function () {
     'use strict';
-    var cwidth, cheight, matchWin, currentlevel;
+    var cwidth, cheight, matchWin, currentlevel, plusX, plusY;
 
-    var tick = function(e) {
-        stage.update();
+    var tick = function (e) {
+        stageSprite.update();
     };
-
-    var setTicker = (function() {
-        var toggle = true;
-        return function() {
-            if (toggle) {
-                createjs.Ticker.addEventListener("tick", tick);
-                toggle = false;
-            }
-        };
-    }());
 
     var image = function (obj) {
         //obj = {i : number, q : queueObject, pos : {x:0.07 y:0.04}} p:position
-        var img, j, sheetName, sheetImg, name, array, i, imgConfig, o;
+        var img, sheetImg, array, i, imgConfig, o;
         i = obj.i;
         array = Scene1.getArray();
         imgConfig = Scene1.getDataLevel().img[i];
@@ -31,13 +21,11 @@ var Scene1 = {};
             o.images = [obj.q.getResult('img' + obj.i)];
             sheetImg = new createjs.SpriteSheet(o);
             img = new createjs.Sprite(sheetImg, 'idle');
-            img.scaleX = img.scaleY = canvas.width * imgConfig.scale;
-            setTicker();
-        }else {
+            Scene1.setTicker();
+        } else {
             img = new createjs.Bitmap(obj.q.getResult('img' + obj.i));
-            img.scaleX = img.scaleY = canvas.width * imgConfig.scale;
         }
-
+        img.scaleX = img.scaleY = canvas.width * imgConfig.scale;
         array[i] = new createjs.Container();
         array[i].name = 'imageContainer' + i;
         array[i].obj = obj;
@@ -46,7 +34,7 @@ var Scene1 = {};
         array[i].addChild(img);
     };
 
-    var imageName = function(i) {
+    var imageName = function (i) {
         var j, sheetName, name, array;
         j = i * 3;
         array = Scene1.getArray();
@@ -68,13 +56,12 @@ var Scene1 = {};
         });
         if (Scene1.getValues().bool) {
             name = new createjs.Sprite(sheetName, 'gray');
-            name.scaleX = name.scaleY = canvas.width * 0.00065;
         } else {
             name = new createjs.Sprite(sheetName, 'blank');
-            name.scaleX = name.scaleY = canvas.width * 0.00065;
         }
+        name.scaleX = name.scaleY = canvas.width * 0.00065;
         array[i].addChild(name);
-        stage.addChild(array[i]);
+        stageSprite.addChild(array[i]);
     };
 
     var draggable = function (i) {
@@ -115,7 +102,6 @@ var Scene1 = {};
         drag.on('pressmove', function (evt) {
             // currentTarget will be the container that the event listener was added to:
 //        name.scaleX = name.scaleY = 1.35;
-            c.graphics._fill.style = 'transparent';
             evt.currentTarget.x = evt.stageX - cwidth / 2;
             evt.currentTarget.y = evt.stageY - cheight;
             stage.update();
@@ -123,17 +109,19 @@ var Scene1 = {};
         drag.on('pressup', function (evt) {
             var bitmap;
             bitmap = Scene1.getArray()[i];
-
             //Los if crean un cuadrado logico alrededor de cada imagen donde se puede soltar el Drag
-            if ((evt.currentTarget.x + 115 > (bitmap.x) && (evt.currentTarget.x < (bitmap.x + 50)))) {
-                if ((evt.currentTarget.y + 80 > (bitmap.y) && (evt.currentTarget.y < (bitmap.y + 80)))) {
+            if ((evt.currentTarget.x > (bitmap.x - plusX * 1.3)) && (evt.currentTarget.x < (bitmap.x + plusX))) {
+                if ((evt.currentTarget.y > (bitmap.y - plusY * 1.3)) && (evt.currentTarget.y < (bitmap.y + plusY))) {
+
                     drag.removeAllEventListeners();
                     Scene1.setWin(1);
                     drag.removeAllChildren();
                     drag.name = null;
                     bitmap.children[1].gotoAndStop('done');
-                    if(bitmap.children[0].spriteSheet){
+                    if (bitmap.children[0].spriteSheet) {
                         bitmap.children[0].gotoAndPlay('done');
+                    } else {
+                        stageSprite.update();
                     }
                 }
             }
@@ -175,6 +163,11 @@ var Scene1 = {};
                 matchWin = img.length;
                 currentlevel = Scene1.getValues().level + 1;
 
+                Scene1.removeTicker();
+
+                plusX = canvas.width * 0.0846;
+                plusY = canvas.height * 0.1143;
+
                 Scene1.getDataLevel = function () {
                     return dataLevel;
                 };
@@ -195,13 +188,14 @@ var Scene1 = {};
                     draggable(randomWords[i]);
                 }
                 stage.update();
+                stageSprite.update();
 
                 window.onresize = resize(l);
             },
             getQueue: function () {
                 return obj.queue;
             },
-            getConfig: function() {
+            getConfig: function () {
                 return obj.config;
             },
             setWin: function (n) {
@@ -220,10 +214,24 @@ var Scene1 = {};
     }());
     Scene1.initialize = setUp(obj, Scene1);
 
-    var resize = function (length) {
-
+    Scene1.setTicker = (function () {
+        var toggle = true;
+        Scene1.removeTicker = function () {
+            createjs.Ticker.removeEventListener("tick", tick);
+            toggle = true;
+        };
         return function () {
-            var drag, imgC, backg, ch1, ch2;
+            if (toggle) {
+                createjs.Ticker.addEventListener("tick", tick);
+                toggle = false;
+            }
+        };
+    }());
+
+    var resize = function (length) {
+        var imgVector = Scene1.getDataLevel().img;
+        return function () {
+            var drag, imgC, backg, ch1, ch2, imgConfig;
             setAspectRatio();
             backg = stageBack.getChildByName('backg');
             backg.scaleX = canvas.width / backg.image.width;
@@ -234,6 +242,7 @@ var Scene1 = {};
 
             for (var i = 0; i < length; i += 1) {
                 drag = stage.getChildByName('drag' + i);
+                imgConfig = imgVector[i];
                 if (drag) {
                     ch1 = drag.children[0];
                     ch2 = drag.children[1];
@@ -241,13 +250,14 @@ var Scene1 = {};
                     ch1.scaleX = ch1.scaleY = canvas.width * 0.0008;
                     ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
                 }
-                imgC = stage.getChildByName('imageContainer' + i);
+                imgC = stageSprite.getChildByName('imageContainer' + i);
 
                 if (imgC) {
                     ch1 = imgC.children[0];
                     ch2 = imgC.children[1];
 
-                    ch1.scaleX = ch1.scaleY = canvas.width * 0.0005;
+
+                    ch1.scaleX = ch1.scaleY = canvas.width * imgConfig.scale;
                     ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
                     imgC.x = canvas.width * imgC.obj.pos.x;
                     imgC.y = canvas.height * imgC.obj.pos.y;
@@ -255,6 +265,7 @@ var Scene1 = {};
             }
             stage.update();
             stageBack.update();
+            stageSprite.update();
         };
     };
 }());

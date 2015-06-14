@@ -10,10 +10,10 @@
             "",
             ""
         ],
-        "word":"via"
+        "word":"avión"
     },
     {
-        "backg": "assets/scene2/1/backg/grandia.svg",
+        "backg": "assets/scene3/2/backg/landscape.svg",
         "img":[
 
         ],
@@ -23,9 +23,19 @@
             "",
             ""
         ],
-        "lan":{
-            "es":{"length":4},
-            "en":{"length":4}
-        }
+        "word":"papá"
+    },
+    {
+        "backg": "assets/scene3/3/backg/landscape.svg",
+        "img":[
+
+        ],
+        "audio": [
+            "",
+            "",
+            "",
+            ""
+        ],
+        "word":"luz"
     }
 ]

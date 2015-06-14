@@ -35,6 +35,9 @@ var setUp = function (obj, scene) {
             return values;
         };
 
+        stageSprite.removeAllChildren();
+        stageBack.removeAllChildren();
+
         var rect = new createjs.Shape();
         rect.graphics.beginFill('#E8D24A').drawRect(0, 0, canvas.width, canvas.height);
         stage.addChild(rect);
@@ -90,6 +93,7 @@ var random = function (length) {
             }
         }
         rand.push(rd);
+        //rand.push(i);
     }
     return rand;
 };

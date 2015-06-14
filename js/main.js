@@ -1,9 +1,10 @@
-var stage, stageUi, stageBack;
+var stage, stageUi, stageBack, stageSprite;
 var canvas = document.getElementById('gameCanvas');
 //getting ui canvas component
 var ui = document.getElementById('uiCanvas');
 
-var backCanvas = document.getElementById('backCanvas');
+var backCanvas = document.getElementById('backCanvas'),
+    spriteCanvas = document.querySelector('#spriteCanvas');
 
 var Queue = {};
 
@@ -17,14 +18,14 @@ var setAspectRatio = (function () {
     var ratio = 1920 / 1080;
 
     return function () {
-        ui.width = canvas.width = backCanvas.width = window.innerWidth;
-        ui.height = canvas.height = backCanvas.height = window.innerWidth / ratio;
+        ui.width = canvas.width = backCanvas.width = spriteCanvas.width = window.innerWidth;
+        ui.height = canvas.height = backCanvas.height = spriteCanvas.height = window.innerWidth / ratio;
 
         if (canvas.height < window.innerHeight) {
             var diferencia = window.innerHeight - canvas.height;
-            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = diferencia / 2 + 'px';
+            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = spriteCanvas.style.marginTop= diferencia / 2 + 'px';
         } else {
-            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = '0px';
+            canvas.style.marginTop = ui.style.marginTop = backCanvas.style.marginTop = spriteCanvas.style.marginTop = '0px';
         }
 
 //    console.log('canvas.width:' + canvas.width);
@@ -39,6 +40,7 @@ var init = function () {
     stage.autoClear = true;
     stageUi = new createjs.Stage(ui);
     stageBack = new createjs.Stage(backCanvas);
+    stageSprite = new createjs.Stage(spriteCanvas);
     createjs.Touch.enable(stage);
     createjs.Touch.enable(stageUi);
 
@@ -113,7 +115,7 @@ var sceneImage = function (i, container) {
         stage.removeChild(scene);
         if (Scenes[i]) {
             stage.removeAllChildren();
-            Scenes[i].initialize({lan: language, level: 2, bool: true});
+            Scenes[i].initialize({lan: language, level: 1, bool: true});
         }
         stage.update();
     });
@@ -142,8 +144,8 @@ var settingPanel = function () {
     rect = new createjs.Shape();
     rect.graphics.beginFill('#5A3EA1').drawRect(0, 0, canvas.width - 200, canvas.height - 200);
     ok = new createjs.Shape();
-    okwidth = rect.graphics._activeInstructions[0].params[2] * 0.35;
-    okheight = rect.graphics._activeInstructions[0].params[3];
+    okwidth = rect.graphics._activeInstructions[0].w * 0.35;
+    okheight = rect.graphics._activeInstructions[0].h;
     ok.graphics.beginFill('#57998C').drawRect(okwidth, okheight - 70, 370, 70);
 
     settings = new createjs.Container();

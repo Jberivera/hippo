@@ -1,7 +1,7 @@
 var Scene2 = {};
 (function () {
     'use strict';
-    var cwidth, cheight, before = 0;
+    var cwidth, cheight, before = 0, plusX, plusY;
     var position = [
         {
             'x': 0.35,
@@ -9,7 +9,7 @@ var Scene2 = {};
         },
         {
             'x': 0.1,
-            'y': 0.7
+            'y': 0.75
         },
         {
             'x': 0.83,
@@ -17,11 +17,11 @@ var Scene2 = {};
         },
         {
             'x': 0.6,
-            'y': 0.84
+            'y': 0.75
         },
         {
             'x': 0.46,
-            'y': 0.85
+            'y': 0.75
         },
         {
             'x': 0.87,
@@ -29,7 +29,7 @@ var Scene2 = {};
         },
         {
             'x': 0.7,
-            'y': 0.8
+            'y': 0.75
         },
         {
             'x': 0.1,
@@ -58,16 +58,16 @@ var Scene2 = {};
             },
             'images': [Scene2.getValues().words],
             'frames': {
-                'regX': 30,
-                'regY': 65,
-                'height': 85,
-                'width': 178,
+                'regX': 90,
+                'regY': 85,
+                'height': 130,
+                'width': 340,
                 'count': obj.length * 2
             }
         });
 
         sprite = new createjs.Sprite(sheet, 'blank');
-        sprite.scaleX = sprite.scaleY = canvas.width * 0.00085;
+        sprite.scaleX = sprite.scaleY = canvas.width * 0.00065;
 
         i = obj.i;
         obj.x = before;
@@ -77,7 +77,7 @@ var Scene2 = {};
         dash.graphics.beginFill('#FFFFFF').drawRoundRect(0, 0, width, 30, 5);//(x , y , width, height, round)
         array[i] = new createjs.Container();
         array[i].name = 'dash' + i;
-        array[i].scaleX = array[i].scaleY = canvas.width * 0.0008;
+        //array[i].scaleX = array[i].scaleY = canvas.width * 0.0008;
         array[i].x = array[i].scaleX * obj.x;
         array[i].obj = obj;
         array[i].addChild(dash, sprite);
@@ -86,8 +86,11 @@ var Scene2 = {};
     };
     var draggable = function (obj) {
         //obj has {i: iteration of the for loop, pos: a random position defined above from position vector, l: length of that vector}
+        var j, sheet, drag, sprite, c;
 
-        var j, sheet, drag, sprite;
+        c = new createjs.Shape();
+        c.graphics.beginFill('#' + Math.floor(Math.random() * 999)).drawRoundRect(0, 0, 230, 67, 5);
+
         j = obj.i * 2;
         sheet = new createjs.SpriteSheet({
             'animations': {
@@ -96,22 +99,23 @@ var Scene2 = {};
             },
             'images': [Scene2.getValues().words],
             'frames': {
-                'regX': 20,
+                'regX': 30,
                 'regY': 25,
-                'height': 85,
-                'width': 178,
+                'height': 130,
+                'width': 340,
                 'count': obj.length * 2
             }
         });
         sprite = new createjs.Sprite(sheet, 'drag');
         sprite.scaleX = sprite.scaleY = canvas.width * 0.00065;
+        c.scaleX = c.scaleY = canvas.width * 0.0008;
 
         drag = new createjs.Container();
         drag.x = canvas.width * obj.pos.x;
         drag.y = canvas.height * obj.pos.y;
         drag.obj = obj;
         drag.name = 'drag' + obj.i;
-        drag.addChild(sprite);
+        drag.addChild(c, sprite);
 
         //Scene2.getContainer().addChild(drag);
         stage.addChild(drag);
@@ -129,9 +133,10 @@ var Scene2 = {};
             dash = Scene2.getArray()[obj.i];
 
             //Los if crean un cuadrado logico alrededor de cada imagen donde se puede soltar el Drag
-            if ((evt.currentTarget.x > (dash.x) && (evt.currentTarget.x < (dash.x + 150)))) {
-                if ((evt.currentTarget.y + 80 > (container.y) && (evt.currentTarget.y < (container.y + 80)))) {
-
+            //if ((evt.currentTarget.x > (dash.x) && (evt.currentTarget.x < (dash.x + 150)))) {
+            //    if ((evt.currentTarget.y + 80 > (container.y) && (evt.currentTarget.y < (container.y + 80)))) {
+            if ((evt.currentTarget.x > (dash.x - plusX * 1.3)) && (evt.currentTarget.x < (dash.x + plusX))) {
+                if ((evt.currentTarget.y > (container.y - plusY * 1.3)) && (evt.currentTarget.y < (container.y + plusY))) {
                     drag.removeAllEventListeners();
                     drag.name = null;
                     drag.removeAllChildren();
@@ -174,6 +179,9 @@ var Scene2 = {};
 
                 //phw PhraseWords
                 phw = dataLevel.phraseWords;
+
+                plusX = canvas.width * 0.0846;
+                plusY = canvas.height * 0.1143;
 
                 container = new createjs.Container();
                 container.y = canvas.height * 0.6;
@@ -242,7 +250,7 @@ var Scene2 = {};
                 if (dash) {
                     ch1 = dash.children[0];
                     ch2 = dash.children[1];
-                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00085;
+                    ch2.scaleX = ch2.scaleY = canvas.width * 0.00065;
 
                     dash.scaleX = dash.scaleY = canvas.width * 0.0008;
                     dash.x = dash.scaleX * dash.obj.x;
