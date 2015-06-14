@@ -59,7 +59,7 @@ The project is designed to work with the information in the scene's config file,
 ```
 As you can see in this Json file we have an array, it has the information of a level in each one of his positions, let's explain each key and value,
 
-> Value information below is about the level itself
+> Value description below is about a level itself
 
 *key* | *value*
 --- | ---
