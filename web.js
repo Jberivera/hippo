@@ -1,10 +1,10 @@
-#!/usr/bin/env node
+"use strict";
 
-var server = require("./server");
-var router = require("./router");
-var requestHandlers = require("./requestHandlers");
+var server = require("./server"),
+    router = require("./router"),
+    requestHandlers = require("./requestHandlers");
 
-var handle = {};
-handle["/"] = requestHandlers.index;
+var handler = {};
 
-server.iniciar(router.route, handle);
+handler["/"] = requestHandlers.index;
+server.startServer(router.route, handler);

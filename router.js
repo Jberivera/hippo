@@ -1,5 +1,7 @@
+"use strict";
+
 function route(handle, pathname, res) {
-    console.log("Ruteando " + pathname);
+    //console.log("Ruteando " + pathname);
     if (typeof handle[pathname] === 'function') {
         handle[pathname](res, pathname);
     } else {
