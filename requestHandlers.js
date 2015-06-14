@@ -1,55 +1,45 @@
-var fs = require('fs');
+"use strict";
 
-function index(res, pathname) {
+var fs = require('fs'),
+    path = require("path");
+
+var types = {
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".json": "text/plain",
+    ".png": "image/png",
+    ".jpeg": "image/jpeg",
+    ".jpg": "image/jpg",
+    ".svg": "image/svg+xml"
+};
+
+function index(res) {
     fs.readFile("index.html", "utf8", function (err, data) {
         res.writeHead(200, {"Content-Type": "text/html"});
         if (err) {
-
+            throw err;
         } else {
             res.write(data);
         }
         res.end();
     });
 }
-function data(res, pathname) {
-    var sub = pathname.substring(pathname.length - 3, pathname.length);
-    var path = pathname.substring(1);
-    var Type;
-    switch (sub) {
-        case ".js":
-            Type = "application/javascript";
-            readFile(res, path, Type);
-            break;
-        case "css":
-            Type = "text/css";
-            readFile(res, path, Type);
-            break;
-        case "son":
-            Type = "text/plain";
-            readFile(res, path, Type);
-            break;
-        case "png":
-            Type = "image/png";
-            imgFile(res, path, Type);
-            break;
-        case "svg":
-            Type = "image/svg+xml";
-            imgFile(res, path, Type);
-            break;
-    }
 
+function data(res, filePath) {
+    readFile(res, filePath.substring(1), types[path.extname(filePath)]);
 }
-function readFile(res, path, Type) {
-    fs.readFile(path, "utf8", function (err, data) {
-        res.writeHead(200, {"Content-Type": Type});
-        if (err) throw err;
-        res.end(data);
-    });
+
+function readFile(res, filePath, fileType) {
+    res.writeHead(200, {'Content-Type': fileType });
+    if (fileType.substring(0, 5) === 'image') {
+        res.end(fs.readFileSync(filePath), "binary");
+    } else {
+        fs.readFile(filePath, "utf8", function(err, data) {
+            if (err) throw err;
+            res.end(data);
+        });
+    }
 }
-function imgFile(res, path, Type) {
-    var image = fs.readFileSync(path);
-    res.writeHead(200, {'Content-Type': Type });
-    res.end(image, 'binary');
-}
+
 exports.index = index;
 exports.data = data;
